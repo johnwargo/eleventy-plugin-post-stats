@@ -13,6 +13,7 @@
   "author": "John M. Wargo",
   "license": "MIT",
   "dependencies": {
-    "@11ty/eleventy": "^2.0.1"
+    "@11ty/eleventy": "^2.0.1",
+    "eleventy-plugin-date": "^1.0.0"
   }
 }
