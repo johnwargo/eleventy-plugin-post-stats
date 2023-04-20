@@ -1,0 +1,15 @@
+{
+  "name": "eleventy-plugin-post-stats",
+  "version": "0.0.1",
+  "description": "Post Statistics Eleventy Plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "[\"Eleventy\"",
+    "\"Plugin\"]"
+  ],
+  "author": "John M. Wargo",
+  "license": "MIT"
+}
