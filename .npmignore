@@ -5,3 +5,6 @@ posts/
 
 # files
 11ty-np.*
+eleventy.config.js
+index.md
+.gitignore
