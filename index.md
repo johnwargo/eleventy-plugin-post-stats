@@ -5,7 +5,9 @@ title: Eleventy Plugin Post Stats
 
 Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.
 
-Value: {{ collections.postStats.field1 }}
+Post count: {{ collections.postStats.postCount }}
+First Post:
+Last Post: 
 
 Short loin t-bone turkey, shankle salami ham hock hamburger meatball buffalo meatloaf beef venison spare ribs. Boudin venison picanha ribeye andouille, t-bone pork loin ham landjaeger sausage sirloin. Porchetta turkey swine, short ribs alcatra meatball chislic salami chicken. Rump shank landjaeger shoulder, brisket spare ribs drumstick tail burgdoggen short loin swine chicken tenderloin andouille. Andouille corned beef buffalo chuck picanha fatback, landjaeger swine pastrami kielbasa.
 

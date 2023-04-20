@@ -1,7 +1,16 @@
 
 const postStats = (eleventyConfig) => {
   eleventyConfig.addCollection('postStats', (collection) => {
-    return { field1: 'value3', field2: 'value4' };
+    const posts = collection.getFilteredByTags("post");
+    const postCount = posts.length;
+
+    const statsObject = {
+      postCount: postCount,
+      firstPostDate: posts[0].date,
+      lastPostDate: posts[postCount - 1].date,
+    }
+
+    return statsObject;
   });
 }
 
