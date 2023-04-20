@@ -4,16 +4,16 @@
   "description": "Post Statistics Eleventy Plugin",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "eleventy --serve"
   },
   "keywords": [
-    "[\"Eleventy\"",
-    "\"Plugin\"]"
+    "Eleventy",
+    "Plugin"
   ],
   "author": "John M. Wargo",
   "license": "MIT",
   "dependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "eleventy-plugin-date": "^1.0.0"
+    "@11ty/eleventy": "^2.0.1"
   }
 }
