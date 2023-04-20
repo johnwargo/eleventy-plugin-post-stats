@@ -1,0 +1,6 @@
+{
+  "postsFolder": "posts",
+  "templateFile": "11ty-np.md",
+  "useYear": false,
+  "paragraphCount": 4
+}

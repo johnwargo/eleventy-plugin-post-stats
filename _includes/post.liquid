@@ -1,0 +1,17 @@
+---
+layout: default
+---
+<h1>{{ title }}</h1>
+<p>
+  <strong>Posted:
+  </strong>
+  {{ date | niceDate }} |
+  <strong>Categories:</strong>
+  {% for cat in categories %}
+    <a href="/category/{{ cat | slugify }}">{{ cat }}</a>
+    {% unless forloop.last %},&nbsp;
+    {% endunless %}
+  {% endfor %}
+</p>
+
+{{ content }}
