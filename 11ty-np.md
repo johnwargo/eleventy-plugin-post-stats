@@ -1,6 +1,6 @@
 ---
 title:
 date: 
-categories: []
+categories: 
 tags: post
 ---
