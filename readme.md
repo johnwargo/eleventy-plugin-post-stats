@@ -7,3 +7,10 @@ Chislic jerky ground round, bacon fatback frankfurter pork loin ham beef ribs ve
 Corned beef tenderloin buffalo, pork brisket tail meatball ham hock kevin andouille. Chislic boudin tongue pastrami tenderloin tail. Jerky jowl beef ribs pork loin sausage meatloaf meatball capicola. Frankfurter beef capicola, prosciutto short ribs meatloaf salami bacon beef ribs tail chislic. Pig tongue shoulder buffalo.
 
 Tri-tip hamburger leberkas, cupim turducken ribeye doner beef ribs bresaola drumstick swine chuck beef ground round. Fatback landjaeger capicola kielbasa ribeye hamburger ball tip ham jerky ground round andouille tail. Tri-tip tail bacon alcatra, frankfurter kielbasa filet mignon pork belly. Tenderloin pork chop sirloin beef ribs picanha, doner turducken shoulder ham burgdoggen meatball. Pastrami shank turducken short ribs landjaeger tri-tip drumstick.
+
+## Notes to Self
+
+https://github.com/11ty/eleventy/discussions/2284
+
+
+https://www.npmjs.com/package/debug
