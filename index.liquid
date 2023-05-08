@@ -67,25 +67,11 @@ jerky porchetta capicola shoulder, andouille ground round chislic pig doner.<hr/
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: [
-        'Red',
-        'Blue',
-        'Yellow',
-        'Green',
-        'Purple',
-        'Orange'
-      ],
+      labels: [{% for year in collections.postStats.years %}[{{ year.year }}],{% endfor %}],
       datasets: [
         {
-          label: '# of Votes',
-          data: [
-            12,
-            19,
-            3,
-            5,
-            2,
-            3
-          ],
+          label: '# of Posts',
+          data: [{% for year in collections.postStats.years %}[{{ year.count }}],{% endfor %}],
           borderWidth: 1
         }
       ]
