@@ -1,0 +1,101 @@
+---
+layout: base
+title: Eleventy Plugin Post Stats
+---
+
+Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong.
+Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage
+bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto
+jerky porchetta capicola shoulder, andouille ground round chislic pig doner.<hr/>
+<ul>
+  <li>
+    <strong>Post Count:</strong>
+    {{ collections.postStats.postCount }}</li>
+  <li>
+    <strong>Average days between posts:</strong>
+    {{ collections.postStats.avgDays }}</li>
+  <li>
+    <strong>First Post:</strong>
+    {{ collections.postStats.firstPostDate }}
+  </li>
+  <li>
+    <strong>Last Post:</strong>
+    {{ collections.postStats.lastPostDate }}</li>
+</ul>
+
+<style>
+  table,
+  th,
+  td {
+    border: 1px solid;
+  }
+</style>
+
+<table>
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Count</th>
+      <th>Avg. Days Between Posts&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for year in collections.postStats.years %}
+      <tr>
+        <td>{{ year.year }}</td>
+        <td>{{ year.count }}</td>
+        <td>{{ year.avgDays }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  var dataSet = [{% for year in collections.postStats.years %}[
+        {{ year.year }}, {{ year.count }}, {{ year.avgDays }}
+      ],{% endfor %}];
+
+// console.dir(dataSet);
+
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: [
+        'Red',
+        'Blue',
+        'Yellow',
+        'Green',
+        'Purple',
+        'Orange'
+      ],
+      datasets: [
+        {
+          label: '# of Votes',
+          data: [
+            12,
+            19,
+            3,
+            5,
+            2,
+            3
+          ],
+          borderWidth: 1
+        }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
