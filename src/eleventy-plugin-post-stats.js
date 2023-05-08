@@ -1,59 +1,66 @@
-const fs = require('fs');
-const path = require('path');
-
 
 function byDate(a, b) {
   return a.date - b.date;
 }
 
-function updateStatsCount(totalStats, currentStats) {
-  totalStats.docCount++;
-  totalStats.charCount += currentStats.charCount;
-  totalStats.wordCount += currentStats.wordCount;
-  totalStats.daysBetween += currentStats.daysBetween;
-}
-
-function makeStatsObject() {
-  return {
-    docCount: 0,
-    charCount: 0,
-    wordCount: 0,
-    daysBetween: 0,
-  }
+function truncFloat(num) {
+  return parseFloat(num.toFixed(2));
 }
 
 const postStats = (eleventyConfig) => {
-  eleventyConfig.addCollection('postStats', (collection) => {
+  eleventyConfig.addCollection('postStats', (collectionApi) => {
     // sort by date just to make sure
-    const posts = collection.getFilteredByTags("post").sort(byDate);
+    const posts = collectionApi.getFilteredByTags("post").sort(byDate);
+
     const postCount = posts.length;
     const statsObject = {
+      avgDays: 0,
       postCount: postCount,
-      firstPostDate: posts[0].date,
-      lastPostDate: posts[postCount - 1].date,
+      firstPostDate: posts[0].data.page.date,
+      lastPostDate: posts[postCount - 1].data.page.date,
+      years: []
     }
 
-    // create new stats objects
-    totalStats = { ...makeStatsObject() }
-    yearStats = { ...makeStatsObject() }
+    var avgDays = 0;
+    var totalCount = 0;
+    var totalDays = 0;
+    var yearCount = 0;
+    var yearDays = 0;
+    var prevPostDate = posts[0].data.page.date;
+    var currentYear = prevPostDate.getFullYear();
 
-    // for (let post of posts) {
-    //   // debug('Post: %O', post)
-    //   // post.templateContent
-
-    // }
-
-    // data = [];
-    // for (const [key, value] of Object.entries(posts[0])) {
-    //   data.push({ key: key, value: value });
-    // }
-    // return data;
-
-    let outputFile = path.join(process.cwd(), 'post.json');
-    // let fileContent = JSON.stringify(JSON.parse(posts[0].data));
-    let fileContent = JSON.stringify(JSON.parse(posts[0].templateContent));
-    fs.writeFileSync(outputFile, fileContent, 'utf8');
-
+    // loop though the posts and write the date to the console
+    for (let post of posts) {
+      const postDate = post.data.page.date;
+      const daysBetween = (postDate - prevPostDate) / (1000 * 60 * 60 * 24);
+      // Did we change year?
+      var thisYear = postDate.getFullYear();
+      if (thisYear != currentYear) {
+        // calculate the average days between posts
+        avgDays = yearDays / yearCount;
+        // Add our year stats to the object
+        yearObject = { year: currentYear, count: yearCount, avgDays: truncFloat(avgDays) };
+        statsObject.years.push(yearObject);
+        // reset the year article count
+        yearCount = 0;
+        yearDays = 0;
+        currentYear = thisYear;
+      }
+      totalCount++;
+      totalDays += daysBetween;
+      yearCount++;
+      yearDays += daysBetween;
+      prevPostDate = postDate;
+    }
+    if (yearCount > 0) {
+      // calculate the average days between posts
+      avgDays = yearDays / yearCount;
+      // Add our year stats to the object
+      yearObject = { year: currentYear, count: yearCount, avgDays: truncFloat(avgDays) };
+      statsObject.years.push(yearObject);
+    }
+    statsObject.avgDays = truncFloat(totalDays / totalCount);
+    console.dir(statsObject);
     return statsObject;
   });
 }
