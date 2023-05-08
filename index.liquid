@@ -6,93 +6,99 @@ title: Eleventy Plugin Post Stats
 Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong.
 Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage
 bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto
-jerky porchetta capicola shoulder, andouille ground round chislic pig doner.<hr/>
-<ul>
-  <li>
-    <strong>Post Count:</strong>
-    {{ collections.postStats.postCount }}</li>
-  <li>
-    <strong>Average days between posts:</strong>
-    {{ collections.postStats.avgDays }}</li>
-  <li>
-    <strong>First Post:</strong>
-    {{ collections.postStats.firstPostDate }}
-  </li>
-  <li>
-    <strong>Last Post:</strong>
-    {{ collections.postStats.lastPostDate }}</li>
-</ul>
+jerky porchetta capicola shoulder, andouille ground round chislic pig doner.<br/>
 
-<style>
-  table,
-  th,
-  td {
-    border: 1px solid;
-  }
-  .chart-container {
-    width: 1000px;
-    height: 600px
-  }
-</style>
+{% if collections.postStats.postCount < 1 %}
+  <p>No data to display</p>
+{% else %}
+  <ul>
+    <li>
+      <strong>Post Count:</strong>
+      {{ collections.postStats.postCount }}</li>
+    <li>
+      <strong>Average days between posts:</strong>
+      {{ collections.postStats.avgDays }}</li>
+    <li>
+      <strong>First Post:</strong>
+      {{ collections.postStats.firstPostDate }}
+    </li>
+    <li>
+      <strong>Last Post:</strong>
+      {{ collections.postStats.lastPostDate }}</li>
+  </ul>
 
-<table>
-  <thead>
-    <tr>
-      <th>Year</th>
-      <th>Count</th>
-      <th>Avg. Days Between Posts&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for year in collections.postStats.years %}
+  <style>
+    table,
+    th,
+    td {
+      border: 1px solid;
+    }
+    .chart-container {
+      width: 1000px;
+      height: 600px
+    }
+  </style>
+
+  <table>
+    <thead>
       <tr>
-        <td>{{ year.year }}</td>
-        <td>{{ year.count }}</td>
-        <td>{{ year.avgDays }}</td>
+        <th>Year</th>
+        <th>Count</th>
+        <th>Avg. Days Between Posts&nbsp;</th>
       </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {% for year in collections.postStats.years %}
+        <tr>
+          <td>{{ year.year }}</td>
+          <td>{{ year.count }}</td>
+          <td>{{ year.avgDays }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
-<div class="chart-container">
-  <canvas id="myChart"></canvas>
-</div>
+  <div class="chart-container">
+    <canvas id="myChart"></canvas>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  var dataSet = [{% for year in collections.postStats.years %}[
-        {{ year.year }}, {{ year.count }}, {{ year.avgDays }}
-      ],{% endfor %}];
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    var dataSet = [{% for year in collections.postStats.years %}[
+          {{ year.year }}, {{ year.count }}, {{ year.avgDays }}
+        ],{% endfor %}];
 
 // console.dir(dataSet);
 
-  const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('myChart');
 
-  new Chart(ctx, {
+    new Chart(ctx, {
 
-    data: {
-      labels: [{% for year in collections.postStats.years %}[{{ year.year }}],{% endfor %}],
-      datasets: [
-        {
-          type: 'bar',
-          label: '# of Posts',
-          data: [{% for year in collections.postStats.years %}[{{ year.count }}],{% endfor %}],
-          borderWidth: 1,
-          order: 1
-        }, {
-          type: 'line',
-          label: 'Average Days Between Posts',
-          data: [{% for year in collections.postStats.years %}[{{ year.avgDays }}],{% endfor %}],
-          order: 2
-        }
-      ]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
+      data: {
+        labels: [{% for year in collections.postStats.years %}[{{ year.year }}],{% endfor %}],
+        datasets: [
+          {
+            type: 'bar',
+            label: '# of Posts',
+            data: [{% for year in collections.postStats.years %}[{{ year.count }}],{% endfor %}],
+            borderWidth: 1,
+            order: 1
+          }, {
+            type: 'line',
+            label: 'Average Days Between Posts',
+            data: [{% for year in collections.postStats.years %}[{{ year.avgDays }}],{% endfor %}],
+            order: 2
+          }
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
         }
       }
-    }
-  });
-</script>
+    });
+  </script>
+
+{% endif %}
