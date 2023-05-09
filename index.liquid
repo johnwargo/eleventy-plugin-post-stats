@@ -75,7 +75,7 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
           order: 1
         }, {
           type: 'line',
-          label: 'Average Days Between Posts',
+          label: 'Average Number of Days Between Posts',
           data: [{% for year in collections.postStats.years %}{{ year.avgDays }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
           lineTension: 0.8,
           order: 2
