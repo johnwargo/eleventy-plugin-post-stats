@@ -8,6 +8,8 @@ Corned beef tenderloin buffalo, pork brisket tail meatball ham hock kevin andoui
 
 Tri-tip hamburger leberkas, cupim turducken ribeye doner beef ribs bresaola drumstick swine chuck beef ground round. Fatback landjaeger capicola kielbasa ribeye hamburger ball tip ham jerky ground round andouille tail. Tri-tip tail bacon alcatra, frankfurter kielbasa filet mignon pork belly. Tenderloin pork chop sirloin beef ribs picanha, doner turducken shoulder ham burgdoggen meatball. Pastrami shank turducken short ribs landjaeger tri-tip drumstick.
 
+![Sample Stats Page](images/image-01.png)
+
 ## Notes to Self
 
 https://github.com/11ty/eleventy/discussions/2284
