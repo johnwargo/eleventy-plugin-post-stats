@@ -54,13 +54,13 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
   </table>
 
   <div class="chart-container">
-    <canvas id="myChart"></canvas>
+    <canvas id="statsChart"></canvas>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
 
-    const ctx = document.getElementById('myChart');
+    const ctx = document.getElementById('statsChart');
 
     new Chart(ctx, {
 
@@ -69,7 +69,7 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
       datasets: [
         {
           type: 'bar',
-          label: '# of Posts',
+          label: 'Number of Posts',
           data: [{% for year in collections.postStats.years %}{{ year.count }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
           borderWidth: 1,
           order: 1
@@ -77,6 +77,7 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
           type: 'line',
           label: 'Average Days Between Posts',
           data: [{% for year in collections.postStats.years %}{{ year.avgDays }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          lineTension: 0.8,
           order: 2
         }
       ]
