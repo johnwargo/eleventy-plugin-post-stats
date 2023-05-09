@@ -1,10 +1,13 @@
 # Folders
 _includes/
 _site/
+images/
+node_modules/
 posts/
 
 # files
+.gitignore
 11ty-np.*
 eleventy.config.js
-index.md
-.gitignore
+index.liquid
+package-lock.json
