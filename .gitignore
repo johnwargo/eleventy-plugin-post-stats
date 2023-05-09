@@ -1,7 +1,6 @@
 # Folders
 node_modules/
 _site/
-posts/
 
 # files
 package-lock.json

@@ -13,6 +13,9 @@ const postStats = (eleventyConfig) => {
     const posts = collectionApi.getFilteredByTags("post").sort(byDate);
 
     const postCount = posts.length;
+    console.log(`Total posts: ${postCount}`);
+    
+
     const statsObject = {
       avgDays: 0,
       postCount: postCount,
