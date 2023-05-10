@@ -4,14 +4,14 @@ An Eleventy plugin that generates a statistics collection you can use in your El
 
 ```json
 {
-  avgDays: 44.81,
-  count: 16,
-  firstPostDate: 2021-04-01T00:00:00.000Z,
-  lastPostDate: 2023-03-19T00:00:00.000Z,
-  years: [
-    { year: 2021, count: 8, avgDays: 24 },
-    { year: 2022, count: 5, avgDays: 81.8 },
-    { year: 2023, count: 3, avgDays: 38.67 }
+  "avgDays": 44.81,
+  "count": 16,
+  "firstPostDate": 2021-04-01T00:00:00.000Z,
+  "lastPostDate": 2023-03-19T00:00:00.000Z,
+  "years": [
+    { "year": 2021, "count": 8, "avgDays": 24 },
+    { "year": 2022, "count": 5, "avgDays": 81.8 },
+    { "year": 2023, "count": 3, "avgDays": 38.67 }
   ]
 }
 ```
