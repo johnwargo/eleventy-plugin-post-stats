@@ -18,7 +18,7 @@ const postStats = (eleventyConfig) => {
 
     const statsObject = {
       avgDays: 0,
-      postCount: postCount,
+      count: postCount,
       firstPostDate: posts[0].data.page.date,
       lastPostDate: posts[postCount - 1].data.page.date,
       years: []

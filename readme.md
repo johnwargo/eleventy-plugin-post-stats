@@ -1,14 +1,11 @@
 # Eleventy Plugin Post Statistics
 
-Bacon ipsum dolor amet corned beef swine turducken meatball boudin sirloin spare ribs ham hock. Capicola sausage jowl bresaola rump, picanha cupim meatball beef ribs tenderloin. Cupim turducken swine, pork fatback tenderloin ground round buffalo andouille chuck ribeye biltong ham hock pastrami. Sausage kevin shankle shoulder. Bresaola turducken jerky pancetta bacon shoulder meatball pork loin.
-
-![Sample Stats Page](images/image-01.png)
-
+An Eleventy plugin that generates a statistics collection you can use in your Eleventy sites to display stats for your site. The plugin loops through all of your site's posts and builds the following collection:
 
 ```json
 {
   avgDays: 44.81,
-  postCount: 16,
+  count: 16,
   firstPostDate: 2021-04-01T00:00:00.000Z,
   lastPostDate: 2023-03-19T00:00:00.000Z,
   years: [
@@ -19,9 +16,20 @@ Bacon ipsum dolor amet corned beef swine turducken meatball boudin sirloin spare
 }
 ```
 
-## Notes to Self
+At the root level are the following properties:
 
-https://github.com/11ty/eleventy/discussions/2284
+* `avgDays`: The average number of days between posts for all posts
+* `count`: The total number of posts in the site
+* `firstPostDate`: The timestamp for the first post published
+* `lastPostDate`: The timestamp for the most recent post
+* `Years` array: An array of statistics (count and average number of days between posts) for each year's posts.
 
+Using that data, you can create a page in your site similar to the following (with better style and formatting, of course):
 
-https://www.npmjs.com/package/debug
+![Sample Stats Page](images/image-01.png)
+
+***
+
+You can find information on many different topics on my [personal blog](http://www.johnwargo.com). Learn about all of my publications at [John Wargo Books](http://www.johnwargobooks.com).
+
+If you find this code useful and feel like thanking me for providing it, please consider <a *href*="https://www.buymeacoffee.com/johnwargo" *target*="_blank">Buying Me a Coffee</a>, or making a purchase from [my Amazon Wish List](https://amzn.com/w/1WI6AAUKPT5P9).
