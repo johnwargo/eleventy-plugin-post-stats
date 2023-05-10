@@ -55,7 +55,7 @@ At the root level are the following properties:
 
 Using that data, you can create a page in your site similar to the following (with better style and formatting, of course):
 
-![Sample Stats Page](https://github.com/johnwargo/eleventy-plugin-post-stats/blob/main/images/image-01.png)
+![Sample Stats Page](images/image-01.png)
 
 ***
 
