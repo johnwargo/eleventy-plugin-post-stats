@@ -5,11 +5,11 @@ title: Eleventy Plugin Post Stats
 
 Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.<br/>
 
-{% if collections.postStats.postCount > 0 %}
+{% if collections.postStats.count > 0 %}
   <ul>
     <li>
       <strong>Post Count:</strong>
-      {{ collections.postStats.postCount }}</li>
+      {{ collections.postStats.count }}</li>
     <li>
       <strong>Average days between posts:</strong>
       {{ collections.postStats.avgDays }}</li>

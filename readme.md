@@ -1,6 +1,35 @@
 # Eleventy Plugin Post Statistics
 
-An Eleventy plugin that generates a statistics collection you can use in your Eleventy sites to display stats for your site. The plugin loops through all of your site's posts and builds the following collection:
+An Eleventy plugin that generates a statistics collection you can use in your Eleventy sites to display stats for your site. 
+
+## Installation
+
+To install the plugin, in a terminal window or command prompt pointing to your Eleventy project execute the following command:
+
+```shell
+npm install eleventy-plugin-post-stats
+```
+
+In your project's `eleventy.config.js` file, import the package using the following:
+
+```js
+const pluginStats = require('eleventy-plugin-post-stats');
+```
+
+And in the same file's `module.exports` section, along with all the other plugin statements you site uses, add the following `addPlugin` statement:
+
+```js
+module.exports = eleventyConfig => {
+
+  // Only add the following line
+	eleventyConfig.addPlugin(pluginStats);
+
+}
+```
+
+## Usage 
+
+The plugin loops through all of your site's posts and builds the following collection:
 
 ```json
 {
