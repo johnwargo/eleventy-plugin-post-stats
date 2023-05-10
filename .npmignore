@@ -7,7 +7,6 @@ posts/
 
 # files
 .gitignore
-11ty-np.*
 eleventy.config.js
 index.liquid
 package-lock.json
