@@ -22,7 +22,7 @@ And in the same file's `module.exports` section, along with all the other plugin
 module.exports = eleventyConfig => {
 
   // Only add the following line
-	eleventyConfig.addPlugin(pluginStats);
+  eleventyConfig.addPlugin(pluginStats);
 
 }
 ```
