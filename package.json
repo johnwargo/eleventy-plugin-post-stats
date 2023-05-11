@@ -2,6 +2,12 @@
   "name": "eleventy-plugin-post-stats",
   "version": "0.0.5",
   "description": "Post Statistics Eleventy Plugin",
+  "author": "John M. Wargo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnwargo/eleventy-plugin-post-stats"
+  },
   "main": "src/eleventy-plugin-post-stats.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,9 +16,7 @@
   "keywords": [
     "Eleventy",
     "Plugin"
-  ],
-  "author": "John M. Wargo",
-  "license": "MIT",
+  ],  
   "dependencies": {
     "@11ty/eleventy": "^2.0.1"
   }
