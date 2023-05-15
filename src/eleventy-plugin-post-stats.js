@@ -29,7 +29,7 @@ const postStats = (eleventyConfig) => {
     var prevPostDate = posts[0].data.page.date;
     var currentYear = prevPostDate.getFullYear();
 
-    // loop though the posts and write the date to the console
+    console.log('Eleventy-Plugin-Post-Stats: Generating post stats');
     for (let post of posts) {
       const postDate = post.data.page.date;
       const daysBetween = (postDate - prevPostDate) / (1000 * 60 * 60 * 24);
@@ -60,7 +60,7 @@ const postStats = (eleventyConfig) => {
       statsObject.years.push(yearObject);
     }
     statsObject.avgDays = truncFloat(totalDays / totalCount);
-    // console.dir(statsObject);
+    console.log('Eleventy-Plugin-Post-Stats: Finished generating post stats');
     return statsObject;
   });
 }
