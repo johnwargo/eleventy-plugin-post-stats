@@ -1,4 +1,5 @@
 
+
 function byDate(a, b) {
   return a.date - b.date;
 }
@@ -9,6 +10,10 @@ function truncFloat(num) {
 
 const postStats = (eleventyConfig) => {
   eleventyConfig.addCollection('postStats', (collectionApi) => {
+
+    const APP_NAME = 'Eleventy-Plugin-Post-Stats';
+    const durationStr = `[${APP_NAME}] Duration`;
+
     // sort by date just to make sure
     const posts = collectionApi.getFilteredByTags("post").sort(byDate);
 
@@ -29,7 +34,9 @@ const postStats = (eleventyConfig) => {
     var prevPostDate = posts[0].data.page.date;
     var currentYear = prevPostDate.getFullYear();
 
-    console.log('Eleventy-Plugin-Post-Stats: Generating post stats');
+
+    console.log(`[${APP_NAME}] Generating post stats`);
+    console.time(durationStr);
     for (let post of posts) {
       const postDate = post.data.page.date;
       const daysBetween = (postDate - prevPostDate) / (1000 * 60 * 60 * 24);
@@ -60,7 +67,9 @@ const postStats = (eleventyConfig) => {
       statsObject.years.push(yearObject);
     }
     statsObject.avgDays = truncFloat(totalDays / totalCount);
-    console.log('Eleventy-Plugin-Post-Stats: Finished generating post stats');
+    console.log(`[${APP_NAME}] Completed post stats generation`);
+
+    console.timeEnd(durationStr);
     return statsObject;
   });
 }
