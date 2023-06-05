@@ -5,3 +5,4 @@ _site/
 # files
 package-lock.json
 11ty-np.*
+cpl.cmd
