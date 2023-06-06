@@ -34,7 +34,6 @@ const postStats = (eleventyConfig) => {
     var prevPostDate = posts[0].data.page.date;
     var currentYear = prevPostDate.getFullYear();
 
-
     console.log(`[${APP_NAME}] Generating post stats`);
     console.time(durationStr);
     for (let post of posts) {
