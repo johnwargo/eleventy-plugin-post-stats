@@ -4,10 +4,6 @@ function byDate(a, b) {
   return a.date - b.date;
 }
 
-// function truncFloat(num) {
-//   return parseFloat(num.toFixed(2));
-// }
-
 const postStats = (eleventyConfig) => {
   eleventyConfig.addCollection('postStats', (collectionApi) => {
 
