@@ -1,4 +1,9 @@
-
+/***********************************************
+ * Eleventy Plugin Post Stats
+ * 
+ * By John M. Wargo
+ * https://johnwargo.com
+ ***********************************************/
 
 function byDate(a, b) {
   return a.date - b.date;
