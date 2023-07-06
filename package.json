@@ -8,10 +8,11 @@
     "type": "git",
     "url": "https://github.com/johnwargo/eleventy-plugin-post-stats"
   },
-  "main": "src/eleventy-plugin-post-stats.js",
+  "main": "eleventy-plugin-post-stats.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "eleventy --serve"
+    "start": "eleventy --serve",
+    "build": "eleventy"
   },
   "keywords": [
     "Eleventy",

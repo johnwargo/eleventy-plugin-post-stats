@@ -1,13 +1,16 @@
-const postStats = require('./src/eleventy-plugin-post-stats.js');
+const postStats = require('./eleventy-plugin-post-stats.js');
 
 module.exports = eleventyConfig => {
 
   eleventyConfig.addPlugin(postStats);
 
   return {
-    dir: {
-      output: "_site",
-    }
-  }
-
+		dir: {
+      input: 'src',
+			output: "_site",
+			includes: "_includes",
+			layouts: "_layouts",
+			data: "_data"			
+		}
+	}
 };
