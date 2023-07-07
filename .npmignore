@@ -5,6 +5,7 @@ images/
 node_modules/
 posts/
 src/
+ts-src/
 
 # files
 .gitignore
