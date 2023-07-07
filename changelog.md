@@ -1,5 +1,10 @@
 # Changelog
 
+## 20230707
+
+Breaking change, `count` changed to `postCount`
+Converted source to TypeScript
+
 ## 20230706
 
 Rebuilt the Eleventy project so all site files go into the `src` folder to make the repo cleaner

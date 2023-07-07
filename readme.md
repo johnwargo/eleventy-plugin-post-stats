@@ -34,13 +34,13 @@ The plugin loops through all of your site's posts and builds the following colle
 ```json
 {
   "avgDays": 44.81,
-  "count": 16,
+  "postCount": 16,
   "firstPostDate": "2021-04-01T00:00:00.000Z",
   "lastPostDate": "2023-03-19T00:00:00.000Z",
   "years": [
-    { "year": 2021, "count": 8, "avgDays": 24 },
-    { "year": 2022, "count": 5, "avgDays": 81.8 },
-    { "year": 2023, "count": 3, "avgDays": 38.67 }
+    { "year": 2021, "postCount": 8, "avgDays": 24 },
+    { "year": 2022, "postCount": 5, "avgDays": 81.8 },
+    { "year": 2023, "postCount": 3, "avgDays": 38.67 }
   ]
 }
 ```
@@ -48,10 +48,10 @@ The plugin loops through all of your site's posts and builds the following colle
 At the root level are the following properties:
 
 * `avgDays`: The average number of days between posts for all posts
-* `count`: The total number of posts in the site
+* `postCount`: The total number of posts in the site
 * `firstPostDate`: The timestamp for the first post published
 * `lastPostDate`: The timestamp for the most recent post
-* `Years` array: An array of statistics (count and average number of days between posts) for each year's posts.
+* `Years` array: An array of statistics (postCount and average number of days between posts) for each year's posts.
 
 Using that data, you can create a page in your site similar to the following (with better style and formatting, of course):
 
