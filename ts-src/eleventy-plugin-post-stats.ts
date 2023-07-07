@@ -5,12 +5,36 @@
  * https://johnwargo.com
  ***********************************************/
 
-function byDate(a, b) {
+type StatsObject = {
+  avgDays: number,
+  postCount: number,
+  firstPostDate: Date,
+  lastPostDate: Date,
+  years: YearStats[],
+  paragraphCount?: number,
+  wordCount?: number,
+  codeBlockCount?: number
+}
+
+type YearStats = {
+  year: number,
+  postCount: number,
+  avgDays: number,
+  paragraphCount?: number,
+  wordCount?: number,
+  codeBlockCount?: number
+}
+
+type ModuleOptions = {
+  debugMode?: boolean
+}
+
+function byDate(a: any, b: any) {
   return a.date - b.date;
 }
 
-module.exports = function(eleventyConfig, options = {}) {
-  eleventyConfig.addCollection('postStats', (collectionApi) => {
+module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
+  eleventyConfig.addCollection('postStats', (collectionApi: any) => {
 
     const APP_NAME = 'Eleventy-Plugin-Post-Stats';
     const durationStr = `[${APP_NAME}] Duration`;
@@ -18,10 +42,10 @@ module.exports = function(eleventyConfig, options = {}) {
     // sort by date just to make sure
     const posts = collectionApi.getFilteredByTags("post").sort(byDate);
 
-    const postCount = posts.length;   
-    const statsObject = {
+    const postCount = posts.length;
+    const statsObject: StatsObject = {
       avgDays: 0,
-      count: postCount,
+      postCount: postCount,
       firstPostDate: posts[0].data.page.date,
       lastPostDate: posts[postCount - 1].data.page.date,
       years: []
@@ -51,9 +75,9 @@ module.exports = function(eleventyConfig, options = {}) {
         // calculate the average days between posts
         avgDays = yearDays / yearCount;
         // Add our year stats to the object
-        yearObject = { year: currentYear, count: yearCount, avgDays: avgDays.toFixed(2) };
+        let yearObject: YearStats = { year: currentYear, postCount: yearCount, avgDays: parseFloat(avgDays.toFixed(2)) };
         statsObject.years.push(yearObject);
-        // reset the year article count
+        // reset the year article counts
         yearCount = 0;
         yearDays = 0;
         currentYear = thisYear;
@@ -68,10 +92,10 @@ module.exports = function(eleventyConfig, options = {}) {
       // calculate the average days between posts
       avgDays = yearDays / yearCount;
       // Add our year stats to the object
-      yearObject = { year: currentYear, count: yearCount, avgDays: avgDays.toFixed(2) };
+      let yearObject: YearStats = { year: currentYear, postCount: yearCount, avgDays: parseFloat(avgDays.toFixed(2)) };
       statsObject.years.push(yearObject);
-    }    
-    statsObject.avgDays = (totalDays / totalCount).toFixed(2);
+    }
+    statsObject.avgDays = parseFloat((totalDays / totalCount).toFixed(2));
 
     console.log(`[${APP_NAME}] Completed post stats generation`);
     console.timeEnd(durationStr);

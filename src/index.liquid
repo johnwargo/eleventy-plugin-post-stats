@@ -5,11 +5,11 @@ title: Eleventy Plugin Post Stats
 
 Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.<br/>
 
-{% if collections.postStats.count > 0 %}
+{% if collections.postStats.postCount > 0 %}
   <ul>
     <li>
       <strong>Post Count:</strong>
-      {{ collections.postStats.count }}</li>
+      {{ collections.postStats.postCount }}</li>
     <li>
       <strong>Average days between posts:</strong>
       {{ collections.postStats.avgDays }}</li>
@@ -46,7 +46,7 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
       {% for year in collections.postStats.years %}
         <tr>
           <td>{{ year.year }}</td>
-          <td>{{ year.count }}</td>
+          <td>{{ year.postCount }}</td>
           <td>{{ year.avgDays }}</td>
         </tr>
       {% endfor %}
@@ -70,7 +70,7 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
         {
           type: 'bar',
           label: 'Number of Posts',
-          data: [{% for year in collections.postStats.years %}{{ year.count }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          data: [{% for year in collections.postStats.years %}{{ year.postCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
           borderWidth: 1,
           order: 1
         }, {
