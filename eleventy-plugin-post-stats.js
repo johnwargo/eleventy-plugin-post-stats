@@ -9,7 +9,7 @@ function byDate(a, b) {
   return a.date - b.date;
 }
 
-const postStats = (eleventyConfig) => {
+module.exports = function(eleventyConfig, options = {}) {
   eleventyConfig.addCollection('postStats', (collectionApi) => {
 
     const APP_NAME = 'Eleventy-Plugin-Post-Stats';
@@ -35,7 +35,11 @@ const postStats = (eleventyConfig) => {
     var prevPostDate = posts[0].data.page.date;
     var currentYear = prevPostDate.getFullYear();
 
+    const debugMode = options.debugMode || false;
+    if (debugMode) console.log(`[${APP_NAME}] Debug mode enabled`);
+
     console.log(`[${APP_NAME}] Generating post stats`);
+    if (debugMode) console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
     console.time(durationStr);
     for (let post of posts) {
       const postDate = post.data.page.date;
@@ -43,6 +47,7 @@ const postStats = (eleventyConfig) => {
       // Did we change year?
       var thisYear = postDate.getFullYear();
       if (thisYear != currentYear) {
+        if (debugMode) console.log(`[${APP_NAME}] Processing ${thisYear} posts`);
         // calculate the average days between posts
         avgDays = yearDays / yearCount;
         // Add our year stats to the object
@@ -67,13 +72,10 @@ const postStats = (eleventyConfig) => {
       statsObject.years.push(yearObject);
     }    
     statsObject.avgDays = (totalDays / totalCount).toFixed(2);
-    console.log(`[${APP_NAME}] Completed post stats generation`);
 
+    console.log(`[${APP_NAME}] Completed post stats generation`);
     console.timeEnd(durationStr);
+
     return statsObject;
   });
 }
-
-module.exports = (eleventyConfig) => {
-  eleventyConfig.addPlugin(postStats);
-};
