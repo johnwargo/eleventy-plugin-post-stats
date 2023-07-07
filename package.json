@@ -11,8 +11,8 @@
   "main": "eleventy-plugin-post-stats.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "eleventy --serve",
-    "build": "eleventy"
+    "start": "tsc && eleventy --serve",
+    "build": "tsc && eleventy"
   },
   "keywords": [
     "Eleventy",
