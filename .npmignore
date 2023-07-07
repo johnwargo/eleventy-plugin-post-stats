@@ -4,10 +4,12 @@ _site/
 images/
 node_modules/
 posts/
+src/
 
 # files
 .gitignore
 .eleventyignore
 eleventy.config.js
 index.liquid
-package-lock.json
+cpl.cmd
+pub.mjs
