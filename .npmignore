@@ -14,3 +14,4 @@ eleventy.config.js
 index.liquid
 cpl.cmd
 pub.mjs
+package-lock.json
