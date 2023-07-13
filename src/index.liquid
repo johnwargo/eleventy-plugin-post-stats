@@ -38,8 +38,11 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
     <thead>
       <tr>
         <th>Year</th>
-        <th>Count</th>
+        <th>Post Count</th>
         <th>Avg. Days Between Posts&nbsp;</th>
+        <th>Paragraphs</th>
+        <th>Words</th>
+        <th>Code Blocks</th>
       </tr>
     </thead>
     <tbody>
@@ -48,22 +51,28 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
           <td>{{ year.year }}</td>
           <td>{{ year.postCount }}</td>
           <td>{{ year.avgDays }}</td>
+          <td>{{ year.paragraphCount }}</td>
+          <td>{{ year.wordCount }}</td>
+          <td>{{ year.codeBlockCount }}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 
+  <h2>Post Stats</h2>
   <div class="chart-container">
-    <canvas id="statsChart"></canvas>
+    <canvas id="statsChart1"></canvas>
+  </div>
+
+  <h2>Content Stats</h2>
+  <div class="chart-container">
+    <canvas id="statsChart2"></canvas>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-
-    const ctx = document.getElementById('statsChart');
-
+    const ctx = document.getElementById('statsChart1');
     new Chart(ctx, {
-
       data: {
         labels: [{% for year in collections.postStats.years %}'{{ year.year }}'{%- unless forloop.last %},{% endunless %}{% endfor %}],
       datasets: [
@@ -79,6 +88,42 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
           data: [{% for year in collections.postStats.years %}{{ year.avgDays }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
           lineTension: 0.8,
           order: 2
+        }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+  </script>
+
+  <script>
+    const ctx = document.getElementById('statsChart2');
+    new Chart(ctx, {
+      data: {
+        labels: [{% for year in collections.postStats.years %}'{{ year.year }}'{%- unless forloop.last %},{% endunless %}{% endfor %}],
+      datasets: [
+        {
+          type: 'line',
+          label: 'Paragraphs per Post',
+          data: [{% for year in collections.postStats.years %}{{ year.paragraphCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          borderWidth: 1,
+          order: 1
+        }, {
+          type: 'line',
+          label: 'Words per Post',
+          data: [{% for year in collections.postStats.years %}{{ year.wordCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          borderWidth: 1,
+          order: 2
+        }, {
+          type: 'line',
+          label: 'Code Blocks per Post',
+          data: [{% for year in collections.postStats.years %}{{ year.codeBlockCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          order: 3
         }
       ]
     },

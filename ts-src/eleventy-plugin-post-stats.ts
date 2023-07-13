@@ -7,22 +7,22 @@
 
 type StatsObject = {
   avgDays: number,
-  codeBlockCount?: number
-  postCount: number,
+  avgCodeBlockCount?: number
+  avgParagraphCount?: number,
+  avgWordCount?: number,
   firstPostDate: Date,
-  lastPostDate: Date,
-  paragraphCount?: number,
-  wordCount?: number,
+  lastPostDate: Date,  
+  postCount: number,
   years: YearStats[],
 }
 
 type YearStats = {
   year: number,
-  postCount: number,
   avgDays: number,
-  paragraphCount?: number,
-  wordCount?: number,
-  codeBlockCount?: number
+  avgCodeBlockCount?: number,
+  avgParagraphCount?: number,
+  avgWordCount?: number,
+  postCount: number
 }
 
 type ModuleOptions = {
