@@ -7,13 +7,13 @@
 
 type StatsObject = {
   avgDays: number,
+  codeBlockCount?: number
   postCount: number,
   firstPostDate: Date,
   lastPostDate: Date,
-  years: YearStats[],
   paragraphCount?: number,
   wordCount?: number,
-  codeBlockCount?: number
+  years: YearStats[],
 }
 
 type YearStats = {
@@ -33,7 +33,7 @@ function byDate(a: any, b: any) {
   return a.date - b.date;
 }
 
-module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
+module.exports = function (eleventyConfig: any, options: ModuleOptions) {
   eleventyConfig.addCollection('postStats', (collectionApi: any) => {
 
     const APP_NAME = 'Eleventy-Plugin-Post-Stats';

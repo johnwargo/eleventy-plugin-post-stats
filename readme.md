@@ -26,7 +26,6 @@ module.exports = eleventyConfig => {
 
 }
 ```
-
 ## Usage 
 
 The plugin loops through all of your site's posts and builds the following collection:

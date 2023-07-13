@@ -2,7 +2,7 @@
 function byDate(a, b) {
     return a.date - b.date;
 }
-module.exports = function (eleventyConfig, options = {}) {
+module.exports = function (eleventyConfig, options) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
         const APP_NAME = 'Eleventy-Plugin-Post-Stats';
         const durationStr = `[${APP_NAME}] Duration`;
