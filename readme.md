@@ -189,6 +189,8 @@ Using that data, you can create a page in your site similar to the following (wi
 
 ![Sample Stats Page](images/image-01.png)
 
+Refer to this project's [index.liquid](https://github.com/johnwargo/eleventy-plugin-post-stats/blob/main/src/index.liquid) file for the source code for that page.
+
 ## Notes
 
 Eleventy doesn't let you access page content from a plugin, at least I couldn't figure out how to do so, so the plugin reads each post file from the file system during processing. My hope is that someday the Eleventy team removes that restriction, it should improve the performance of the plugin for larger sites. Right now Eleventy reads all the post files, then the plugin does it again, so each post gets loaded from the file system twice.
