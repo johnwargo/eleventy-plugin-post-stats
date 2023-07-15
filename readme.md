@@ -12,7 +12,7 @@ To install the plugin, in a terminal window or command prompt pointing to your E
 npm install eleventy-plugin-post-stats
 ```
 
-In your project's `eleventy.config.js` file, import the package using the following:
+In your project's `eleventy.config.js` file, import the package (at the top of the file) using:
 
 ```js
 const pluginStats = require('eleventy-plugin-post-stats');
@@ -29,7 +29,7 @@ module.exports = eleventyConfig => {
 }
 ```
 
-The complete file should look something lie the following (but with your site's other stuff in it):
+The complete file should look something lie the following (but with your site's other stuff in it too):
 
 ```js
 const postStats = require('./eleventy-plugin-post-stats.js');
@@ -50,6 +50,15 @@ module.exports = eleventyConfig => {
 };
 ```
 
+With this in place, you Eleventy site has a new collection called `postStats`, you can access it using `collections.postStats.postCount`. 
+
+You can enhance the out the plugin sends to the terminal as the plugin executes by enabling Debug Mode:
+
+```js
+eleventyConfig.addPlugin(postStats, { debugMode: true });
+```
+
+Here's a complete example:
 
 ```js
 const postStats = require('./eleventy-plugin-post-stats.js');
@@ -70,11 +79,7 @@ module.exports = eleventyConfig => {
 };
 ```
 
-
-
-## Usage 
-
-The plugin loops through all of your site's posts and builds the following collection:
+When the plugin executes during an Eleventy site build, loops through all of your site's posts and builds the following collection:
 
 ```json
 {
@@ -118,14 +123,58 @@ The plugin loops through all of your site's posts and builds the following colle
 }
 ```
 
-
 At the root level are the following properties:
 
-* `avgDays`: The average number of days between posts for all posts
+* `avgDays`: The average number of days between posts for the entire site.
+* `avgCharacterCount`: The average number of post characters per post for the entire site.
+* `avgCodeBlockCount`: The average number of code blocks per post for the entire site.
+* `avgParagraphCount`: The average number of paragraphs per post for the entire site.
+* `avgWordCount`" The average number of words per post for the entire site.
 * `postCount`: The total number of posts in the site
 * `firstPostDate`: The timestamp for the first post published
 * `lastPostDate`: The timestamp for the most recent post
 * `Years` array: An array of statistics (postCount and average number of days between posts) for each year's posts.
+
+Here's an example in Liquid for rendering those values in an Eleventy site:
+
+```html
+<ul>
+  <li>
+    <strong>First post:</strong>
+    {{ collections.postStats.firstPostDate }}
+  </li>
+  <li>
+    <strong>Last post:</strong>
+    {{ collections.postStats.lastPostDate }}
+  </li>
+  <li>
+    <strong>Post count:</strong>
+    {{ collections.postStats.postCount }}
+  </li>
+  <li>
+    <strong>Average days between posts:</strong>
+    {{ collections.postStats.avgDays }}
+  </li>
+  <li>
+    <strong>Average characters per post:</strong>
+    {{ collections.postStats.avgCharacterCount }}
+  </li>
+  <li>
+    <strong>Average words per post:</strong>
+    {{ collections.postStats.avgWordCount }}
+  </li>
+  <li>
+    <strong>Average paragraphs per post:</strong>
+    {{ collections.postStats.avgParagraphCount }}
+  </li>
+  {%- if collections.postStats.avgCodeBlockCount > 0 -%}
+    <li>
+      <strong>Average code blocks per post:</strong>
+      {{ collections.postStats.avgCodeBlockCount }}
+    </li>
+  {% endif %}
+</ul>
+```
 
 Using that data, you can create a page in your site similar to the following (with better style and formatting, of course):
 
