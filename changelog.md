@@ -1,5 +1,9 @@
 # Changelog
 
+## 20230715 0.1.3
+
+Added post statistics: character count, word count, paragraph count, and code block count
+
 ## 20230707
 
 Breaking change, `count` changed to `postCount`
