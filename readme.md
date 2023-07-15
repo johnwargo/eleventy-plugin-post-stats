@@ -193,6 +193,14 @@ Using that data, you can create a page in your site similar to the following (wi
 
 Refer to this project's [index.liquid](https://github.com/johnwargo/eleventy-plugin-post-stats/blob/main/src/index.liquid) file for the source code for that page.
 
+## Launching the Test Site
+
+To view hte sample statistics page, make a local clone of the repo then:
+
+1. Open a terminal window or command prompt and execute the following command: `npm install`
+2. start the `serve` process by executing `npm start`
+3. Click the link to launch the site in the browser.
+
 ## Notes
 
 Eleventy doesn't let you access page content from a plugin, at least I couldn't figure out how to do so, so the plugin reads each post file from the file system during processing. My hope is that someday the Eleventy team removes that restriction, it should improve the performance of the plugin for larger sites. Right now Eleventy reads all the post files, then the plugin does it again, so each post gets loaded from the file system twice.
