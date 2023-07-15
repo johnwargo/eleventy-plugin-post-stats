@@ -2,7 +2,12 @@
 
 An Eleventy plugin that generates a statistics collection you can use in your Eleventy sites to display stats for your site. 
 
+Eleventy doesn't let you access page content from a plugin, at least I couldn't figure out how, so the plugin...
+
 **Note:** This plugin uses the [Writing-stats](https://www.npmjs.com/package/writing-stats) package to handle the character, word, amd paragraph counting.
+
+sample page uses mvp (add link) for formatting
+
 
 ## Installation
 
