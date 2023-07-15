@@ -40,8 +40,7 @@ type ContentStats = {
 }
 
 type ModuleOptions = {
-  debugMode?: boolean,
-  writeData?: boolean
+  debugMode?: boolean
 }
 
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
@@ -102,7 +101,7 @@ function processPostFile(filePath: string, debugMode: boolean): ContentStats {
   }
 }
 
-module.exports = function (eleventyConfig: any, options: ModuleOptions) {
+module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
   eleventyConfig.addCollection('postStats', (collectionApi: any) => {
 
     // sort by date just to make sure

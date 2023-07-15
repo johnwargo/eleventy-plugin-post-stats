@@ -48,7 +48,7 @@ function processPostFile(filePath, debugMode) {
         };
     }
 }
-module.exports = function (eleventyConfig, options) {
+module.exports = function (eleventyConfig, options = {}) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
         const posts = collectionApi.getFilteredByTags("post").sort(byDate);
         const postCount = posts.length;
