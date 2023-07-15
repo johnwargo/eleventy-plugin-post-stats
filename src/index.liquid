@@ -6,6 +6,10 @@ title: Eleventy Plugin Post Stats
 Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.<br/>
 
 {% if collections.postStats.postCount > 0 %}
+
+  <h2>Global Statistics</h2>
+  <p>Biltong drumstick pork loin ham. Beef ribs t-bone drumstick andouille ham. Ham hock ball tip spare ribs landjaeger, meatloaf chislic boudin corned beef tenderloin cupim. Shankle shank ball tip meatloaf ham. Meatloaf pork chop short loin frankfurter tongue rump jowl burgdoggen. Kevin ham tongue, frankfurter hamburger filet mignon fatback meatball jowl pork chop drumstick pork loin buffalo. Doner cow tongue, turkey buffalo beef cupim biltong bresaola drumstick.</p>
+
   <ul>
     <li>
       <strong>First post:</strong>
@@ -56,6 +60,7 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
   </style>
 
   <h2>Yearly Statistics</h2>
+  <p>Shoulder ground round pork belly corned beef chuck beef bacon bresaola. Ball tip buffalo pork chop shoulder. Tenderloin pork loin bacon ham cow. Buffalo pork belly salami prosciutto, t-bone tri-tip shank flank cow pork chop pastrami burgdoggen turkey bresaola. Capicola shank doner filet mignon. Salami ball tip shoulder doner beef ribs strip steak prosciutto venison. Shankle jerky strip steak turkey tongue short ribs beef ribs ham hock buffalo tenderloin spare ribs.</p>
 
   <table>
     <thead>
@@ -88,20 +93,19 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
     </tbody>
   </table>
 
-  <h2>Post Stats</h2>
+  <h2>Post Statistics</h2>
   <div class="chart-container">
     <canvas id="statsChart1"></canvas>
   </div>
-
-  <h2>Content Stats</h2>
+  <h2>Content Statistics</h2>
   <div class="chart-container">
     <canvas id="statsChart2"></canvas>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const ctx = document.getElementById('statsChart1');
-    new Chart(ctx, {
+    const ctx1 = document.getElementById('statsChart1');
+    new Chart(ctx1, {
       data: {
         labels: [{% for year in collections.postStats.years %}'{{ year.year }}'{%- unless forloop.last %},{% endunless %}{% endfor %}],
       datasets: [
@@ -113,10 +117,16 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
           order: 1
         }, {
           type: 'line',
-          label: 'Average Number of Days Between Posts',
+          label: 'Yearly Average Number of Days Between Posts',
           data: [{% for year in collections.postStats.years %}{{ year.avgDays }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
           lineTension: 0.8,
           order: 2
+        }, {
+          type: 'line',
+          label: 'Site Average Number of Days Between Posts',
+          data: [{% for year in collections.postStats.years %}{{ collections.postStats.avgDays | commaize }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          lineTension: 0.8,
+          order: 3
         }
       ]
     },
@@ -131,29 +141,37 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
   </script>
 
   <script>
-    const ctx = document.getElementById('statsChart2');
-    new Chart(ctx, {
+    const ctx2 = document.getElementById('statsChart2');
+    new Chart(ctx2, {
       data: {
         labels: [{% for year in collections.postStats.years %}'{{ year.year }}'{%- unless forloop.last %},{% endunless %}{% endfor %}],
       datasets: [
         {
-          type: 'line',
-          label: 'Paragraphs per Post',
-          data: [{% for year in collections.postStats.years %}{{ year.paragraphCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          type: 'bar',
+          label: 'Characters per Post',
+          data: [{% for year in collections.postStats.years %}{{ year.avgCharacterCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
           borderWidth: 1,
           order: 1
         }, {
           type: 'line',
           label: 'Words per Post',
-          data: [{% for year in collections.postStats.years %}{{ year.wordCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          data: [{% for year in collections.postStats.years %}{{ year.avgWordCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
           borderWidth: 1,
           order: 2
         }, {
           type: 'line',
-          label: 'Code Blocks per Post',
-          data: [{% for year in collections.postStats.years %}{{ year.codeBlockCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          label: 'Paragraphs per Post',
+          data: [{% for year in collections.postStats.years %}{{ year.avgParagraphCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          borderWidth: 1,
           order: 3
         }
+        {% if collections.postStats.avgCodeBlockCount > 0 %}, {
+            type: 'line',
+            label: 'Code Blocks per Post',
+            data: [{% for year in collections.postStats.years %}{{ year.avgCodeBlockCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+            order: 4
+          }
+        {% endif %}
       ]
     },
     options: {
