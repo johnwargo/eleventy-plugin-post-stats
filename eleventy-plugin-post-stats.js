@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
 const path = require('path');
 const writingStats = require('writing-stats');
-const codeBlockRegEx = /```(.*?)```/gis;
+const APP_NAME = 'Eleventy-Plugin-Post-Stats';
+const durationStr = `[${APP_NAME}] Duration`;
 function byDate(a, b) {
     return a.date - b.date;
 }
@@ -17,17 +18,20 @@ function countCodeBlocks(content) {
         return 0;
     }
 }
-function processPostFile(filePath) {
-    console.log(`Processing ${filePath}`);
+function processPostFile(filePath, debugMode, writeData) {
+    if (debugMode)
+        console.log(`[${APP_NAME}] Processing ${filePath}`);
     try {
         let content = fs.readFileSync(filePath, 'utf8');
         content = content.replace(/---\n.*?\n---/s, '');
         content = content.replace(/^\s*[\r\n]/gm, '');
         let codeBlocks = countCodeBlocks(content);
         content = content.replace(/(```.+?```)/gms, '');
-        console.log(content);
         let stats = writingStats(content);
-        console.dir(stats);
+        if (writeData) {
+            console.dir(stats);
+            console.log();
+        }
         return {
             characterCount: stats.characterCount,
             codeBlocks: codeBlocks,
@@ -47,8 +51,6 @@ function processPostFile(filePath) {
 }
 module.exports = function (eleventyConfig, options) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
-        const APP_NAME = 'Eleventy-Plugin-Post-Stats';
-        const durationStr = `[${APP_NAME}] Duration`;
         const posts = collectionApi.getFilteredByTags("post").sort(byDate);
         const postCount = posts.length;
         const statsObject = {
@@ -78,8 +80,11 @@ module.exports = function (eleventyConfig, options) {
         var prevPostDate = posts[0].data.page.date;
         var currentYear = prevPostDate.getFullYear();
         const debugMode = options.debugMode || false;
-        if (debugMode)
+        const writeData = options.writeData || false;
+        if (debugMode) {
             console.log(`[${APP_NAME}] Debug mode enabled`);
+            console.log(`[${APP_NAME}] Write Data: ${writeData}`);
+        }
         console.log(`[${APP_NAME}] Generating post stats`);
         if (debugMode)
             console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
@@ -115,7 +120,7 @@ module.exports = function (eleventyConfig, options) {
             yearPostDays += daysBetween;
             totalPostCount++;
             yearPostCount++;
-            const postStats = processPostFile(post.page.inputPath);
+            const postStats = processPostFile(post.page.inputPath, debugMode, writeData);
             totalCharacterCount += postStats.characterCount;
             yearCharacterCount += postStats.characterCount;
             totalCodeBlockCount += postStats.codeBlocks;
@@ -145,6 +150,12 @@ module.exports = function (eleventyConfig, options) {
         statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
         console.log(`[${APP_NAME}] Completed post stats generation`);
         console.timeEnd(durationStr);
+        if (writeData) {
+            console.log(`\n[${APP_NAME}] Post Stats Object`);
+            console.log('-'.repeat(50));
+            console.dir(statsObject);
+            console.log();
+        }
         return statsObject;
     });
 };

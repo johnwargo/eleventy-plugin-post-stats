@@ -5,13 +5,12 @@
  * https://johnwargo.com
  ***********************************************/
 
+import { write } from "fs";
 import { parse } from "path";
 
 const fs = require('fs');
 const path = require('path');
 const writingStats = require('writing-stats');
-
-const codeBlockRegEx = /```(.*?)```/gis;
 
 type StatsObject = {
   avgDays: number,
@@ -43,8 +42,12 @@ type ContentStats = {
 }
 
 type ModuleOptions = {
-  debugMode?: boolean
+  debugMode?: boolean,
+  writeData?: boolean
 }
+
+const APP_NAME = 'Eleventy-Plugin-Post-Stats';
+const durationStr = `[${APP_NAME}] Duration`;
 
 function byDate(a: any, b: any) {
   return a.date - b.date;
@@ -60,8 +63,10 @@ function countCodeBlocks(content: string): number {
   }
 }
 
-function processPostFile(filePath: string): ContentStats {
-  console.log(`Processing ${filePath}`);
+function processPostFile(filePath: string, debugMode: boolean, writeData: boolean): ContentStats {
+
+  if (debugMode) console.log(`[${APP_NAME}] Processing ${filePath}`);
+
   try {
     // read the file
     let content = fs.readFileSync(filePath, 'utf8');
@@ -76,13 +81,12 @@ function processPostFile(filePath: string): ContentStats {
     // content = content.replace(/```(.*?)```/gis, '');    
     // content = content.replace(/^((?:(?:[ ]{4}|\t).*(\R|$))+)/gm, '');
     content = content.replace(/(```.+?```)/gms, '');
-
-
-
-    console.log(content);
     // get the rest of the article stats
     let stats = writingStats(content);
-    console.dir(stats);
+    if (writeData) {
+      console.dir(stats);
+      console.log();
+    }
     return {
       characterCount: stats.characterCount,
       codeBlocks: codeBlocks,
@@ -102,9 +106,6 @@ function processPostFile(filePath: string): ContentStats {
 
 module.exports = function (eleventyConfig: any, options: ModuleOptions) {
   eleventyConfig.addCollection('postStats', (collectionApi: any) => {
-
-    const APP_NAME = 'Eleventy-Plugin-Post-Stats';
-    const durationStr = `[${APP_NAME}] Duration`;
 
     // sort by date just to make sure
     const posts = collectionApi.getFilteredByTags("post").sort(byDate);
@@ -139,7 +140,11 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions) {
     var currentYear = prevPostDate.getFullYear();
 
     const debugMode = options.debugMode || false;
-    if (debugMode) console.log(`[${APP_NAME}] Debug mode enabled`);
+    const writeData = options.writeData || false;
+    if (debugMode) {
+      console.log(`[${APP_NAME}] Debug mode enabled`);
+      console.log(`[${APP_NAME}] Write Data: ${writeData}`);
+    }
 
     console.log(`[${APP_NAME}] Generating post stats`);
     if (debugMode) console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
@@ -183,7 +188,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions) {
       yearPostCount++;
 
       // get the writing stats for the post
-      const postStats: ContentStats = processPostFile(post.page.inputPath);
+      const postStats: ContentStats = processPostFile(post.page.inputPath, debugMode, writeData);
       // update character counts
       totalCharacterCount += postStats.characterCount;
       yearCharacterCount += postStats.characterCount;
@@ -220,6 +225,13 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions) {
 
     console.log(`[${APP_NAME}] Completed post stats generation`);
     console.timeEnd(durationStr);
+
+    if (writeData) {
+      console.log(`\n[${APP_NAME}] Post Stats Object`);
+      console.log('-'.repeat(50));
+      console.dir(statsObject);
+      console.log();
+    }
 
     return statsObject;
   });

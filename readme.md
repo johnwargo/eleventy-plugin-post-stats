@@ -2,6 +2,8 @@
 
 An Eleventy plugin that generates a statistics collection you can use in your Eleventy sites to display stats for your site. 
 
+**Note:** This plugin uses the [Writing-stats](https://www.npmjs.com/package/writing-stats) package to handle the character, word, amd paragraph counting.
+
 ## Installation
 
 To install the plugin, in a terminal window or command prompt pointing to your Eleventy project execute the following command:
@@ -26,23 +28,59 @@ module.exports = eleventyConfig => {
 
 }
 ```
+
+
+writeData: true
+
+debugMode: true
+
+
 ## Usage 
 
 The plugin loops through all of your site's posts and builds the following collection:
 
 ```json
 {
-  "avgDays": 44.81,
-  "postCount": 16,
-  "firstPostDate": "2021-04-01T00:00:00.000Z",
-  "lastPostDate": "2023-03-19T00:00:00.000Z",
-  "years": [
-    { "year": 2021, "postCount": 8, "avgDays": 24 },
-    { "year": 2022, "postCount": 5, "avgDays": 81.8 },
-    { "year": 2023, "postCount": 3, "avgDays": 38.67 }
+  "avgDays": 11.17,
+  "avgCharacterCount": 2034.27,
+  "avgCodeBlockCount": 0.02,
+  "avgParagraphCount": 3.25,
+  "avgWordCount": 366.45,
+  "postCount": 100,
+  "firstPostDate": "2020-06-20T00:00:00.000Z",
+  "lastPostDate": "2023-07-12T00:00:00.000Z",
+  "years": [    
+    {
+      "year": 2021,
+      "postCount": 31,
+      "avgDays": 11.84,
+      "avgCharacterCount": 2045.42,
+      "avgCodeBlockCount": 0,
+      "avgParagraphCount": 3.24,
+      "avgWordCount": 369.06
+    },
+    {
+      "year": 2022,
+      "postCount": 29,
+      "avgDays": 12.41,
+      "avgCharacterCount": 2015.14,
+      "avgCodeBlockCount": 0,
+      "avgParagraphCount": 3.28,
+      "avgWordCount": 361.59
+    },
+    {
+      "year": 2023,
+      "postCount": 19,
+      "avgDays": 10.37,
+      "avgCharacterCount": 1949.47,
+      "avgCodeBlockCount": 0,
+      "avgParagraphCount": 3.13,
+      "avgWordCount": 352.95
+    }
   ]
 }
 ```
+
 
 At the root level are the following properties:
 
