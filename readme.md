@@ -65,17 +65,17 @@ const postStats = require('./eleventy-plugin-post-stats.js');
 
 module.exports = eleventyConfig => {
 
-	eleventyConfig.addPlugin(postStats, { debugMode: true });
-	
-	return {
-		dir: {
-			input: 'src',
-			output: "_site",
-			includes: "_includes",
-			layouts: "_layouts",
-			data: "_data"
-		}
-	}
+  eleventyConfig.addPlugin(postStats, { debugMode: true });
+
+  return {
+    dir: {
+      input: 'src',
+      output: "_site",
+      includes: "_includes",
+      layouts: "_layouts",
+      data: "_data"
+    }
+  }
 };
 ```
 
@@ -175,6 +175,15 @@ Here's an example in Liquid for rendering those values in an Eleventy site:
   {% endif %}
 </ul>
 ```
+
+The `years` array contains many of those same properties, scoped to all posts for the year:
+
+* `avgDays`: The average number of days between posts for the selected year.
+* `avgCharacterCount`: The average number of post characters per post for the selected year.
+* `avgCodeBlockCount`: The average number of code blocks per post for the selected year.
+* `avgParagraphCount`: The average number of paragraphs per post for the selected year.
+* `avgWordCount`" The average number of words per post for the selected year.
+* `postCount`: The total number of posts in the site
 
 Using that data, you can create a page in your site similar to the following (with better style and formatting, of course):
 
