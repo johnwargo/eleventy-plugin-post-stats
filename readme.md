@@ -1,13 +1,8 @@
 # Eleventy Plugin Post Statistics
 
-An Eleventy plugin that generates a statistics collection you can use in your Eleventy sites to display stats for your site. 
+This is an Eleventy plugin that generates a site posts statistics collection you can use in [Eleventy](https://www.11ty.dev/) sites to display stats for your site. Here is an example from [johnwargo.com](https://johnwargo.com/statistics/).
 
-Eleventy doesn't let you access page content from a plugin, at least I couldn't figure out how, so the plugin...
-
-**Note:** This plugin uses the [Writing-stats](https://www.npmjs.com/package/writing-stats) package to handle the character, word, amd paragraph counting.
-
-sample page uses mvp (add link) for formatting
-
+The repository includes a complete Eleventy project you can serve to see the plugin in action
 
 ## Installation
 
@@ -28,16 +23,53 @@ And in the same file's `module.exports` section, along with all the other plugin
 ```js
 module.exports = eleventyConfig => {
 
-  // Only add the following line
+  // add only the following line
   eleventyConfig.addPlugin(pluginStats);
 
 }
 ```
 
+The complete file should look something lie the following (but with your site's other stuff in it):
 
-writeData: true
+```js
+const postStats = require('./eleventy-plugin-post-stats.js');
 
-debugMode: true
+module.exports = eleventyConfig => {
+
+	eleventyConfig.addPlugin(postStats);
+
+	return {
+		dir: {
+			input: 'src',
+			output: "_site",
+			includes: "_includes",
+			layouts: "_layouts",
+			data: "_data"
+		}
+	}
+};
+```
+
+
+```js
+const postStats = require('./eleventy-plugin-post-stats.js');
+
+module.exports = eleventyConfig => {
+
+	eleventyConfig.addPlugin(postStats, { debugMode: true });
+	
+	return {
+		dir: {
+			input: 'src',
+			output: "_site",
+			includes: "_includes",
+			layouts: "_layouts",
+			data: "_data"
+		}
+	}
+};
+```
+
 
 
 ## Usage 
@@ -98,6 +130,14 @@ At the root level are the following properties:
 Using that data, you can create a page in your site similar to the following (with better style and formatting, of course):
 
 ![Sample Stats Page](images/image-01.png)
+
+## Notes
+
+Eleventy doesn't let you access page content from a plugin, at least I couldn't figure out how to do so, so the plugin reads each post file from the file system during processing. My hope is that someday the Eleventy team removes that restriction, it should improve the performance of the plugin for larger sites. Right now Eleventy reads all the post files, then the plugin does it again, so each post gets loaded from the file system twice.
+
+I didn't code the post stats stuff, instead the plugin uses the [Writing-stats](https://www.npmjs.com/package/writing-stats) package to handle the character, word, amd paragraph counting.
+
+The sample statistics page uses [MVP.css](https://andybrewer.github.io/mvp/) to make the site's sole page prettier without any direct styling. You should be able to take the repository's [index.liquid](https://github.com/johnwargo/eleventy-plugin-post-stats/blob/main/src/index.liquid) file and copy it over to your Eleventy project renaming it to `statistics.liquid` to add stats to the site.
 
 ***
 

@@ -5,11 +5,9 @@
  * https://johnwargo.com
  ***********************************************/
 
-import { write } from "fs";
-import { parse } from "path";
+import { debug } from "console";
 
 const fs = require('fs');
-const path = require('path');
 const writingStats = require('writing-stats');
 
 type StatsObject = {
@@ -63,7 +61,7 @@ function countCodeBlocks(content: string): number {
   }
 }
 
-function processPostFile(filePath: string, debugMode: boolean, writeData: boolean): ContentStats {
+function processPostFile(filePath: string, debugMode: boolean): ContentStats {
 
   if (debugMode) console.log(`[${APP_NAME}] Processing ${filePath}`);
 
@@ -83,7 +81,7 @@ function processPostFile(filePath: string, debugMode: boolean, writeData: boolea
     content = content.replace(/(```.+?```)/gms, '');
     // get the rest of the article stats
     let stats = writingStats(content);
-    if (writeData) {
+    if (debugMode) {
       console.dir(stats);
       console.log();
     }
@@ -140,10 +138,8 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions) {
     var currentYear = prevPostDate.getFullYear();
 
     const debugMode = options.debugMode || false;
-    const writeData = options.writeData || false;
     if (debugMode) {
       console.log(`[${APP_NAME}] Debug mode enabled`);
-      console.log(`[${APP_NAME}] Write Data: ${writeData}`);
     }
 
     console.log(`[${APP_NAME}] Generating post stats`);
@@ -188,7 +184,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions) {
       yearPostCount++;
 
       // get the writing stats for the post
-      const postStats: ContentStats = processPostFile(post.page.inputPath, debugMode, writeData);
+      const postStats: ContentStats = processPostFile(post.page.inputPath, debugMode);
       // update character counts
       totalCharacterCount += postStats.characterCount;
       yearCharacterCount += postStats.characterCount;
@@ -226,7 +222,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions) {
     console.log(`[${APP_NAME}] Completed post stats generation`);
     console.timeEnd(durationStr);
 
-    if (writeData) {
+    if (debugMode) {
       console.log(`\n[${APP_NAME}] Post Stats Object`);
       console.log('-'.repeat(50));
       console.dir(statsObject);

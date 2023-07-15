@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
-const path = require('path');
 const writingStats = require('writing-stats');
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
 const durationStr = `[${APP_NAME}] Duration`;
@@ -18,7 +17,7 @@ function countCodeBlocks(content) {
         return 0;
     }
 }
-function processPostFile(filePath, debugMode, writeData) {
+function processPostFile(filePath, debugMode) {
     if (debugMode)
         console.log(`[${APP_NAME}] Processing ${filePath}`);
     try {
@@ -28,7 +27,7 @@ function processPostFile(filePath, debugMode, writeData) {
         let codeBlocks = countCodeBlocks(content);
         content = content.replace(/(```.+?```)/gms, '');
         let stats = writingStats(content);
-        if (writeData) {
+        if (debugMode) {
             console.dir(stats);
             console.log();
         }
@@ -80,10 +79,8 @@ module.exports = function (eleventyConfig, options) {
         var prevPostDate = posts[0].data.page.date;
         var currentYear = prevPostDate.getFullYear();
         const debugMode = options.debugMode || false;
-        const writeData = options.writeData || false;
         if (debugMode) {
             console.log(`[${APP_NAME}] Debug mode enabled`);
-            console.log(`[${APP_NAME}] Write Data: ${writeData}`);
         }
         console.log(`[${APP_NAME}] Generating post stats`);
         if (debugMode)
@@ -120,7 +117,7 @@ module.exports = function (eleventyConfig, options) {
             yearPostDays += daysBetween;
             totalPostCount++;
             yearPostCount++;
-            const postStats = processPostFile(post.page.inputPath, debugMode, writeData);
+            const postStats = processPostFile(post.page.inputPath, debugMode);
             totalCharacterCount += postStats.characterCount;
             yearCharacterCount += postStats.characterCount;
             totalCodeBlockCount += postStats.codeBlocks;
@@ -150,7 +147,7 @@ module.exports = function (eleventyConfig, options) {
         statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
         console.log(`[${APP_NAME}] Completed post stats generation`);
         console.timeEnd(durationStr);
-        if (writeData) {
+        if (debugMode) {
             console.log(`\n[${APP_NAME}] Post Stats Object`);
             console.log('-'.repeat(50));
             console.dir(statsObject);
