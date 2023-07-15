@@ -8,18 +8,39 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
 {% if collections.postStats.postCount > 0 %}
   <ul>
     <li>
-      <strong>Post Count:</strong>
-      {{ collections.postStats.postCount }}</li>
-    <li>
-      <strong>Average days between posts:</strong>
-      {{ collections.postStats.avgDays }}</li>
-    <li>
-      <strong>First Post:</strong>
+      <strong>First post:</strong>
       {{ collections.postStats.firstPostDate }}
     </li>
     <li>
-      <strong>Last Post:</strong>
-      {{ collections.postStats.lastPostDate }}</li>
+      <strong>Last post:</strong>
+      {{ collections.postStats.lastPostDate }}
+    </li>
+    <li>
+      <strong>Post count:</strong>
+      {{ collections.postStats.postCount | commaize }}
+    </li>
+    <li>
+      <strong>Average days between posts:</strong>
+      {{ collections.postStats.avgDays | commaize }}
+    </li>
+    <li>
+      <strong>Average characters per post:</strong>
+      {{ collections.postStats.avgCharacterCount | commaize }}
+    </li>
+    <li>
+      <strong>Average Words per post:</strong>
+      {{ collections.postStats.avgWordCount | commaize }}
+    </li>
+    <li>
+      <strong>Average paragraphs per post:</strong>
+      {{ collections.postStats.avgParagraphCount | commaize }}
+    </li>
+    {%- if collections.postStats.avgCodeBlockCount > 0 -%}
+      <li>
+        <strong>Average code blocks per post:</strong>
+        {{ collections.postStats.avgCodeBlockCount | commaize }}
+      </li>
+    {% endif %}
   </ul>
 
   <style>

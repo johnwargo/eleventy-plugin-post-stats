@@ -4,6 +4,12 @@ module.exports = eleventyConfig => {
 
 	eleventyConfig.addPlugin(postStats, { debugMode: true });
 
+	eleventyConfig.addFilter("commaize", function (num, locale = "en-us") {
+		return num.toLocaleString(locale);
+	});
+
+	eleventyConfig.addPassthroughCopy("src/assets/");
+
 	return {
 		dir: {
 			input: 'src',
