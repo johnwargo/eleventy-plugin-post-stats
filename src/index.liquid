@@ -28,7 +28,7 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
       {{ collections.postStats.avgCharacterCount | commaize }}
     </li>
     <li>
-      <strong>Average Words per post:</strong>
+      <strong>Average words per post:</strong>
       {{ collections.postStats.avgWordCount | commaize }}
     </li>
     <li>
@@ -55,26 +55,34 @@ Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberk
     }
   </style>
 
+  <h2>Yearly Statistics</h2>
+
   <table>
     <thead>
       <tr>
         <th>Year</th>
         <th>Post Count</th>
         <th>Avg. Days Between Posts&nbsp;</th>
-        <th>Paragraphs</th>
+        <th>Characters</th>
         <th>Words</th>
-        <th>Code Blocks</th>
+        <th>Paragraphs</th>
+        {% if collections.postStats.avgCodeBlockCount > 0 %}
+          <th>Code Blocks</th>
+        {%- endif -%}
       </tr>
     </thead>
     <tbody>
       {% for year in collections.postStats.years %}
         <tr>
           <td>{{ year.year }}</td>
-          <td>{{ year.postCount }}</td>
-          <td>{{ year.avgDays }}</td>
-          <td>{{ year.paragraphCount }}</td>
-          <td>{{ year.wordCount }}</td>
-          <td>{{ year.codeBlockCount }}</td>
+          <td>{{ year.postCount | commaize }}</td>
+          <td>{{ year.avgDays | commaize }}</td>
+          <td>{{ year.avgCharacterCount | commaize }}</td>
+          <td>{{ year.avgParagraphCount | commaize }}</td>
+          <td>{{ year.avgWordCount | commaize }}</td>
+          {%- if collections.postStats.avgCodeBlockCount > 0 -%}
+            <td>{{ year.avgCodeBlockCount | commaize }}</td>
+          {%- endif -%}
         </tr>
       {% endfor %}
     </tbody>
