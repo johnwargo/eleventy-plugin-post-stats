@@ -3,98 +3,179 @@ layout: base
 title: Eleventy Plugin Post Stats
 ---
 
-Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.<br/>
+<p>Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.</p>
 
 {% if collections.postStats.postCount > 0 %}
+
+  <h2>Global Statistics</h2>
+  <p>Biltong drumstick pork loin ham. Beef ribs t-bone drumstick andouille ham. Ham hock ball tip spare ribs landjaeger, meatloaf chislic boudin corned beef tenderloin cupim. Shankle shank ball tip meatloaf ham. Meatloaf pork chop short loin frankfurter tongue rump jowl burgdoggen. Kevin ham tongue, frankfurter hamburger filet mignon fatback meatball jowl pork chop drumstick pork loin buffalo. Doner cow tongue, turkey buffalo beef cupim biltong bresaola drumstick.</p>
   <ul>
     <li>
-      <strong>Post Count:</strong>
-      {{ collections.postStats.postCount }}</li>
-    <li>
-      <strong>Average days between posts:</strong>
-      {{ collections.postStats.avgDays }}</li>
-    <li>
-      <strong>First Post:</strong>
+      <strong>First post:</strong>
       {{ collections.postStats.firstPostDate }}
     </li>
     <li>
-      <strong>Last Post:</strong>
-      {{ collections.postStats.lastPostDate }}</li>
+      <strong>Last post:</strong>
+      {{ collections.postStats.lastPostDate }}
+    </li>
+    <li>
+      <strong>Post count:</strong>
+      {{ collections.postStats.postCount | commaize }}
+    </li>
+    <li>
+      <strong>Average days between posts:</strong>
+      {{ collections.postStats.avgDays | commaize }}
+    </li>
+    <li>
+      <strong>Average characters per post:</strong>
+      {{ collections.postStats.avgCharacterCount | commaize }}
+    </li>
+    <li>
+      <strong>Average words per post:</strong>
+      {{ collections.postStats.avgWordCount | commaize }}
+    </li>
+    <li>
+      <strong>Average paragraphs per post:</strong>
+      {{ collections.postStats.avgParagraphCount | commaize }}
+    </li>
+    {%- if collections.postStats.avgCodeBlockCount > 0 -%}
+      <li>
+        <strong>Average code blocks per post:</strong>
+        {{ collections.postStats.avgCodeBlockCount | commaize }}
+      </li>
+    {% endif %}
   </ul>
 
-  <style>
-    table,
-    th,
-    td {
-      border: 1px solid;
-    }
-    .chart-container {
-      width: 1000px;
-      height: 600px
-    }
-  </style>
-
+  <h2>Yearly Statistics</h2>
+  <p>Shoulder ground round pork belly corned beef chuck beef bacon bresaola. Ball tip buffalo pork chop shoulder. Tenderloin pork loin bacon ham cow. Buffalo pork belly salami prosciutto, t-bone tri-tip shank flank cow pork chop pastrami burgdoggen turkey bresaola. Capicola shank doner filet mignon. Salami ball tip shoulder doner beef ribs strip steak prosciutto venison. Shankle jerky strip steak turkey tongue short ribs beef ribs ham hock buffalo tenderloin spare ribs.</p>
   <table>
     <thead>
       <tr>
         <th>Year</th>
-        <th>Count</th>
+        <th>Post Count</th>
         <th>Avg. Days Between Posts&nbsp;</th>
+        <th>Avg. Characters</th>
+        <th>Avg. Words</th>
+        <th>Avg. Paragraphs</th>
+        {% if collections.postStats.avgCodeBlockCount > 0 %}
+          <th>Avg. Code Blocks</th>
+        {%- endif -%}
       </tr>
     </thead>
     <tbody>
       {% for year in collections.postStats.years %}
         <tr>
-          <td>{{ year.year }}</td>
-          <td>{{ year.postCount }}</td>
-          <td>{{ year.avgDays }}</td>
+          <td>
+            <strong>{{ year.year }}</strong>
+          </td>
+          <td>{{ year.postCount | commaize }}</td>
+          <td>{{ year.avgDays | commaize }}</td>
+          <td>{{ year.avgCharacterCount | commaize }}</td>
+          <td>{{ year.avgParagraphCount | commaize }}</td>
+          <td>{{ year.avgWordCount | commaize }}</td>
+          {%- if collections.postStats.avgCodeBlockCount > 0 -%}
+            <td>{{ year.avgCodeBlockCount | commaize }}</td>
+          {%- endif -%}
         </tr>
       {% endfor %}
     </tbody>
   </table>
 
+  <h2>Post Statistics</h2>
   <div class="chart-container">
-    <canvas id="statsChart"></canvas>
+    <canvas id="statsChart1"></canvas>
   </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-
-    const ctx = document.getElementById('statsChart');
-
-    new Chart(ctx, {
-
-      data: {
-        labels: [{% for year in collections.postStats.years %}'{{ year.year }}'{%- unless forloop.last %},{% endunless %}{% endfor %}],
-      datasets: [
-        {
-          type: 'bar',
-          label: 'Number of Posts',
-          data: [{% for year in collections.postStats.years %}{{ year.postCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
-          borderWidth: 1,
-          order: 1
-        }, {
-          type: 'line',
-          label: 'Average Number of Days Between Posts',
-          data: [{% for year in collections.postStats.years %}{{ year.avgDays }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
-          lineTension: 0.8,
-          order: 2
-        }
-      ]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-  </script>
+  <h2>Content Statistics</h2>
+  <div class="chart-container">
+    <canvas id="statsChart2"></canvas>
+  </div>
 
 {% else %}
   <p>
     <strong>No data to display</strong>
   </p>
-
 {% endif %}
+
+<!-- Chart Scripts -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx1 = document.getElementById('statsChart1');
+  new Chart(ctx1, {
+    data: {
+      labels: [{% for year in collections.postStats.years %}'{{ year.year }}'{%- unless forloop.last %},{% endunless %}{% endfor %}],
+    datasets: [
+      {
+        type: 'bar',
+        label: 'Number of Posts',
+        data: [{% for year in collections.postStats.years %}{{ year.postCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+        borderWidth: 1,
+        order: 1
+      }, {
+        type: 'line',
+        label: 'Yearly Average Number of Days Between Posts',
+        data: [{% for year in collections.postStats.years %}{{ year.avgDays }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+        lineTension: 0.8,
+        order: 2
+      }, {
+        type: 'line',
+        label: 'Site Average Number of Days Between Posts',
+        data: [{% for year in collections.postStats.years %}{{ collections.postStats.avgDays | commaize }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+        lineTension: 0.8,
+        order: 3
+      }
+    ]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>
+
+<script>
+  const ctx2 = document.getElementById('statsChart2');
+  new Chart(ctx2, {
+    data: {
+      labels: [{% for year in collections.postStats.years %}'{{ year.year }}'{%- unless forloop.last %},{% endunless %}{% endfor %}],
+    datasets: [
+      {
+        type: 'bar',
+        label: 'Avg. Characters per Post',
+        data: [{% for year in collections.postStats.years %}{{ year.avgCharacterCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+        borderWidth: 1,
+        order: 1
+      }, {
+        type: 'line',
+        label: 'Avg. Words per Post',
+        data: [{% for year in collections.postStats.years %}{{ year.avgWordCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+        borderWidth: 1,
+        order: 2
+      }, {
+        type: 'line',
+        label: 'Avg. Paragraphs per Post',
+        data: [{% for year in collections.postStats.years %}{{ year.avgParagraphCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+        borderWidth: 1,
+        order: 3
+      }
+      {% if collections.postStats.avgCodeBlockCount > 0 %}, {
+          type: 'line',
+          label: 'Avg. Code Blocks per Post',
+          data: [{% for year in collections.postStats.years %}{{ year.avgCodeBlockCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
+          order: 4
+        }
+      {% endif %}
+    ]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    }
+  }
+});
+</script>

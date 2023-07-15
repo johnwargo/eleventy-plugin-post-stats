@@ -1,17 +1,13 @@
 # Folders
-_includes/
 _site/
-images/
 node_modules/
-posts/
 src/
 ts-src/
 
 # files
 .gitignore
-.eleventyignore
 eleventy.config.js
-index.liquid
 cpl.cmd
 pub.mjs
 package-lock.json
+tsconfig.json
