@@ -71,8 +71,8 @@ title: Eleventy Plugin Post Stats
           <td>{{ year.postCount | commaize }}</td>
           <td>{{ year.avgDays | commaize }}</td>
           <td>{{ year.avgCharacterCount | commaize }}</td>
-          <td>{{ year.avgParagraphCount | commaize }}</td>
           <td>{{ year.avgWordCount | commaize }}</td>
+          <td>{{ year.avgParagraphCount | commaize }}</td>
           {%- if collections.postStats.avgCodeBlockCount > 0 -%}
             <td>{{ year.avgCodeBlockCount | commaize }}</td>
           {%- endif -%}

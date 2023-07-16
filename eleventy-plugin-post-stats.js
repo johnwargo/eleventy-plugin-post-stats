@@ -4,6 +4,7 @@ const fs = require('fs');
 const writingStats = require('writing-stats');
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
 const durationStr = `[${APP_NAME}] Duration`;
+const oneDayMilliseconds = 1000 * 60 * 60 * 24;
 function byDate(a, b) {
     return a.date - b.date;
 }
@@ -33,18 +34,18 @@ function processPostFile(filePath, debugMode) {
         }
         return {
             characterCount: stats.characterCount,
-            codeBlocks: codeBlocks,
-            paragraphs: stats.paragraphCount,
-            words: stats.wordCount
+            codeBlockCount: codeBlocks,
+            paragraphCount: stats.paragraphCount,
+            wordCount: stats.wordCount
         };
     }
     catch (err) {
         console.error(err);
         return {
             characterCount: 0,
-            codeBlocks: 0,
-            paragraphs: 0,
-            words: 0
+            codeBlockCount: 0,
+            paragraphCount: 0,
+            wordCount: 0
         };
     }
 }
@@ -64,12 +65,12 @@ module.exports = function (eleventyConfig, options = {}) {
             years: []
         };
         var avgDays = 0;
+        var totalDays = 0;
         var totalPostCount = 0;
         var totalCharacterCount = 0;
         var totalCodeBlockCount = 0;
         var totalParagraphCount = 0;
         var totalWordCount = 0;
-        var totalDays = 0;
         var yearCharacterCount = 0;
         var yearCodeBlockCount = 0;
         var yearParagraphCount = 0;
@@ -88,13 +89,13 @@ module.exports = function (eleventyConfig, options = {}) {
         console.time(durationStr);
         for (let post of posts) {
             const postDate = post.data.page.date;
-            const daysBetween = (postDate - prevPostDate) / (1000 * 60 * 60 * 24);
+            const daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
             var thisYear = postDate.getFullYear();
             if (thisYear != currentYear) {
                 if (debugMode)
                     console.log(`[${APP_NAME}] Processing ${thisYear} posts`);
                 avgDays = yearPostDays / yearPostCount;
-                let yearObject = {
+                let yearStats = {
                     year: currentYear,
                     postCount: yearPostCount,
                     avgDays: parseFloat(avgDays.toFixed(2)),
@@ -103,7 +104,7 @@ module.exports = function (eleventyConfig, options = {}) {
                     avgParagraphCount: parseFloat((yearParagraphCount / yearPostCount).toFixed(2)),
                     avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2))
                 };
-                statsObject.years.push(yearObject);
+                statsObject.years.push(yearStats);
                 yearCharacterCount = 0;
                 yearCodeBlockCount = 0;
                 yearParagraphCount = 0;
@@ -120,16 +121,16 @@ module.exports = function (eleventyConfig, options = {}) {
             const postStats = processPostFile(post.page.inputPath, debugMode);
             totalCharacterCount += postStats.characterCount;
             yearCharacterCount += postStats.characterCount;
-            totalCodeBlockCount += postStats.codeBlocks;
-            yearCodeBlockCount += postStats.codeBlocks;
-            totalParagraphCount += postStats.paragraphs;
-            yearParagraphCount += postStats.paragraphs;
-            totalWordCount += postStats.words;
-            yearWordCount += postStats.words;
+            totalCodeBlockCount += postStats.codeBlockCount;
+            yearCodeBlockCount += postStats.codeBlockCount;
+            totalParagraphCount += postStats.paragraphCount;
+            yearParagraphCount += postStats.paragraphCount;
+            totalWordCount += postStats.wordCount;
+            yearWordCount += postStats.wordCount;
         }
         if (yearPostCount > 0) {
             avgDays = yearPostDays / yearPostCount;
-            let yearObject = {
+            let yearStats = {
                 year: currentYear,
                 postCount: yearPostCount,
                 avgDays: parseFloat(avgDays.toFixed(2)),
@@ -138,7 +139,7 @@ module.exports = function (eleventyConfig, options = {}) {
                 avgParagraphCount: parseFloat((yearParagraphCount / yearPostCount).toFixed(2)),
                 avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2))
             };
-            statsObject.years.push(yearObject);
+            statsObject.years.push(yearStats);
         }
         statsObject.avgDays = parseFloat((totalDays / totalPostCount).toFixed(2));
         statsObject.avgCharacterCount = parseFloat((totalCharacterCount / totalPostCount).toFixed(2));

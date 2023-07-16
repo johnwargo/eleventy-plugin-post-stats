@@ -34,9 +34,9 @@ type YearStats = {
 
 type ContentStats = {
   characterCount: number,
-  codeBlocks: number,
-  paragraphs: number,
-  words: number
+  codeBlockCount: number,
+  paragraphCount: number,
+  wordCount: number
 }
 
 type ModuleOptions = {
@@ -45,6 +45,7 @@ type ModuleOptions = {
 
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
 const durationStr = `[${APP_NAME}] Duration`;
+const oneDayMilliseconds = 1000 * 60 * 60 * 24;
 
 function byDate(a: any, b: any) {
   return a.date - b.date;
@@ -74,9 +75,7 @@ function processPostFile(filePath: string, debugMode: boolean): ContentStats {
     content = content.replace(/^\s*[\r\n]/gm, '');
     // count code blocks
     let codeBlocks = countCodeBlocks(content);
-    // remove the code blocks
-    // content = content.replace(/```(.*?)```/gis, '');    
-    // content = content.replace(/^((?:(?:[ ]{4}|\t).*(\R|$))+)/gm, '');
+    // remove code blocks for the next part
     content = content.replace(/(```.+?```)/gms, '');
     // get the rest of the article stats
     let stats = writingStats(content);
@@ -86,17 +85,17 @@ function processPostFile(filePath: string, debugMode: boolean): ContentStats {
     }
     return {
       characterCount: stats.characterCount,
-      codeBlocks: codeBlocks,
-      paragraphs: stats.paragraphCount,
-      words: stats.wordCount
+      codeBlockCount: codeBlocks,
+      paragraphCount: stats.paragraphCount,
+      wordCount: stats.wordCount
     };
   } catch (err) {
     console.error(err);
     return {
       characterCount: 0,
-      codeBlocks: 0,
-      paragraphs: 0,
-      words: 0
+      codeBlockCount: 0,
+      paragraphCount: 0,
+      wordCount: 0
     };
   }
 }
@@ -121,12 +120,12 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     }
 
     var avgDays = 0;
+    var totalDays = 0;
     var totalPostCount = 0;
     var totalCharacterCount = 0;
     var totalCodeBlockCount = 0;
     var totalParagraphCount = 0;
     var totalWordCount = 0;
-    var totalDays = 0;
     var yearCharacterCount = 0;
     var yearCodeBlockCount = 0;
     var yearParagraphCount = 0;
@@ -140,13 +139,13 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     if (debugMode) {
       console.log(`[${APP_NAME}] Debug mode enabled`);
     }
-
-    console.log(`[${APP_NAME}] Generating post stats`);
+    console.log(`[${APP_NAME}] Generating post stats`);    
     if (debugMode) console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
     console.time(durationStr);
+
     for (let post of posts) {
       const postDate = post.data.page.date;
-      const daysBetween = (postDate - prevPostDate) / (1000 * 60 * 60 * 24);
+      const daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
       // Did we change year?
       var thisYear = postDate.getFullYear();
       if (thisYear != currentYear) {
@@ -154,7 +153,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
         // calculate the average days between posts
         avgDays = yearPostDays / yearPostCount;
         // Add our year stats to the object
-        let yearObject: YearStats = {
+        let yearStats: YearStats = {
           year: currentYear,
           postCount: yearPostCount,
           avgDays: parseFloat(avgDays.toFixed(2)),
@@ -163,7 +162,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
           avgParagraphCount: parseFloat((yearParagraphCount / yearPostCount).toFixed(2)),
           avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2))
         };
-        statsObject.years.push(yearObject);
+        statsObject.years.push(yearStats);
         // reset the year article counts
         yearCharacterCount = 0;
         yearCodeBlockCount = 0;
@@ -188,20 +187,25 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
       totalCharacterCount += postStats.characterCount;
       yearCharacterCount += postStats.characterCount;
       // update code block counts
-      totalCodeBlockCount += postStats.codeBlocks;
-      yearCodeBlockCount += postStats.codeBlocks;
+      totalCodeBlockCount += postStats.codeBlockCount;
+      yearCodeBlockCount += postStats.codeBlockCount;
       // update paragraph counts
-      totalParagraphCount += postStats.paragraphs;
-      yearParagraphCount += postStats.paragraphs;
+      totalParagraphCount += postStats.paragraphCount;
+      yearParagraphCount += postStats.paragraphCount;
       // update word counts
-      totalWordCount += postStats.words;
-      yearWordCount += postStats.words;
-    }
+      totalWordCount += postStats.wordCount;
+      yearWordCount += postStats.wordCount;
+    } // for (let post of posts) {
+
+    // ================================================================
+    // finish up the last year, works because posts are sorted by date
+    // ================================================================
+
     if (yearPostCount > 0) {
       // calculate the average days between posts
       avgDays = yearPostDays / yearPostCount;
       // Add our year stats to the object
-      let yearObject: YearStats = {
+      let yearStats: YearStats = {
         year: currentYear,
         postCount: yearPostCount,
         avgDays: parseFloat(avgDays.toFixed(2)),
@@ -210,7 +214,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
         avgParagraphCount: parseFloat((yearParagraphCount / yearPostCount).toFixed(2)),
         avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2))
       };
-      statsObject.years.push(yearObject);
+      statsObject.years.push(yearStats);
     }
     statsObject.avgDays = parseFloat((totalDays / totalPostCount).toFixed(2));
     statsObject.avgCharacterCount = parseFloat((totalCharacterCount / totalPostCount).toFixed(2));
