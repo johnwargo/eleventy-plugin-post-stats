@@ -5,10 +5,15 @@
  * https://johnwargo.com
  ***********************************************/
 
-import { debug } from "console";
-
 const fs = require('fs');
 const writingStats = require('writing-stats');
+
+type ContentStats = {
+  characterCount: number,
+  codeBlockCount: number,
+  paragraphCount: number,
+  wordCount: number
+}
 
 type StatsObject = {
   avgDays: number,
@@ -32,15 +37,9 @@ type YearStats = {
   postCount: number
 }
 
-type ContentStats = {
-  characterCount: number,
-  codeBlockCount: number,
-  paragraphCount: number,
-  wordCount: number
-}
-
 type ModuleOptions = {
-  debugMode?: boolean
+  debugMode?: boolean,
+  tag?: string
 }
 
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
@@ -103,10 +102,14 @@ function processPostFile(filePath: string, debugMode: boolean): ContentStats {
 module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
   eleventyConfig.addCollection('postStats', (collectionApi: any) => {
 
+    const debugMode = options.debugMode || false;
+    // get the tag to use for the collection, default to post
+    const tag = options.tag || 'post';
     // sort by date just to make sure
-    const posts = collectionApi.getFilteredByTags("post").sort(byDate);
-
+    const posts = collectionApi.getFilteredByTags(tag).sort(byDate);
     const postCount = posts.length;
+
+    //initialize the data object returned by the plugin 
     const statsObject: StatsObject = {
       avgDays: 0,
       avgCharacterCount: 0,
@@ -135,11 +138,10 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     var prevPostDate = posts[0].data.page.date;
     var currentYear = prevPostDate.getFullYear();
 
-    const debugMode = options.debugMode || false;
     if (debugMode) {
       console.log(`[${APP_NAME}] Debug mode enabled`);
     }
-    console.log(`[${APP_NAME}] Generating post stats`);    
+    console.log(`[${APP_NAME}] Generating statistics for ${postCount} "${tag}" items`);
     if (debugMode) console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
     console.time(durationStr);
 

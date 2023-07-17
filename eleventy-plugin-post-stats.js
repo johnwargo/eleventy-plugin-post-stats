@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
 const writingStats = require('writing-stats');
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
@@ -51,7 +50,9 @@ function processPostFile(filePath, debugMode) {
 }
 module.exports = function (eleventyConfig, options = {}) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
-        const posts = collectionApi.getFilteredByTags("post").sort(byDate);
+        const debugMode = options.debugMode || false;
+        const tag = options.tag || 'post';
+        const posts = collectionApi.getFilteredByTags(tag).sort(byDate);
         const postCount = posts.length;
         const statsObject = {
             avgDays: 0,
@@ -79,11 +80,10 @@ module.exports = function (eleventyConfig, options = {}) {
         var yearPostDays = 0;
         var prevPostDate = posts[0].data.page.date;
         var currentYear = prevPostDate.getFullYear();
-        const debugMode = options.debugMode || false;
         if (debugMode) {
             console.log(`[${APP_NAME}] Debug mode enabled`);
         }
-        console.log(`[${APP_NAME}] Generating post stats`);
+        console.log(`[${APP_NAME}] Generating statistics for ${postCount} "${tag}" items`);
         if (debugMode)
             console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
         console.time(durationStr);

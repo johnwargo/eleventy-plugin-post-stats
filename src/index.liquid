@@ -1,100 +1,121 @@
 ---
 layout: base
-title: Eleventy Plugin Post Stats
+title: Eleventy Plugin Post Stats Example
 ---
 
-<p>Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.</p>
+<main>
+  <h1>{{ title }}</h1>
+  <p>Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.</p>
 
-{% if collections.postStats.postCount > 0 %}
+  {% if collections.postStats.postCount > 0 %}
 
-  <h2>Global Statistics</h2>
-  <p>Biltong drumstick pork loin ham. Beef ribs t-bone drumstick andouille ham. Ham hock ball tip spare ribs landjaeger, meatloaf chislic boudin corned beef tenderloin cupim. Shankle shank ball tip meatloaf ham. Meatloaf pork chop short loin frankfurter tongue rump jowl burgdoggen. Kevin ham tongue, frankfurter hamburger filet mignon fatback meatball jowl pork chop drumstick pork loin buffalo. Doner cow tongue, turkey buffalo beef cupim biltong bresaola drumstick.</p>
-  <ul>
-    <li>
-      <strong>First post:</strong>
-      {{ collections.postStats.firstPostDate }}
-    </li>
-    <li>
-      <strong>Last post:</strong>
-      {{ collections.postStats.lastPostDate }}
-    </li>
-    <li>
-      <strong>Post count:</strong>
-      {{ collections.postStats.postCount | commaize }}
-    </li>
-    <li>
-      <strong>Average days between posts:</strong>
-      {{ collections.postStats.avgDays | commaize }}
-    </li>
-    <li>
-      <strong>Average characters per post:</strong>
-      {{ collections.postStats.avgCharacterCount | commaize }}
-    </li>
-    <li>
-      <strong>Average words per post:</strong>
-      {{ collections.postStats.avgWordCount | commaize }}
-    </li>
-    <li>
-      <strong>Average paragraphs per post:</strong>
-      {{ collections.postStats.avgParagraphCount | commaize }}
-    </li>
-    {%- if collections.postStats.avgCodeBlockCount > 0 -%}
+    <h2>Global Statistics</h2>
+    <p>Biltong drumstick pork loin ham. Beef ribs t-bone drumstick andouille ham. Ham hock ball tip spare ribs landjaeger, meatloaf chislic boudin corned beef tenderloin cupim. Shankle shank ball tip meatloaf ham. Meatloaf pork chop short loin frankfurter tongue rump jowl burgdoggen. Kevin ham tongue, frankfurter hamburger filet mignon fatback meatball jowl pork chop drumstick pork loin buffalo. Doner cow tongue, turkey buffalo beef cupim biltong bresaola drumstick.</p>
+    <ul>
       <li>
-        <strong>Average code blocks per post:</strong>
-        {{ collections.postStats.avgCodeBlockCount | commaize }}
+        <strong>First post:</strong>
+        {{ collections.postStats.firstPostDate }}
       </li>
-    {% endif %}
-  </ul>
+      <li>
+        <strong>Last post:</strong>
+        {{ collections.postStats.lastPostDate }}
+      </li>
+      <li>
+        <strong>Post count:</strong>
+        {{ collections.postStats.postCount | commaize }}
+      </li>
+      <li>
+        <strong>Average days between posts:</strong>
+        {{ collections.postStats.avgDays | commaize }}
+      </li>
+      <li>
+        <strong>Average characters per post:</strong>
+        {{ collections.postStats.avgCharacterCount | commaize }}
+      </li>
+      <li>
+        <strong>Average words per post:</strong>
+        {{ collections.postStats.avgWordCount | commaize }}
+      </li>
+      <li>
+        <strong>Average paragraphs per post:</strong>
+        {{ collections.postStats.avgParagraphCount | commaize }}
+      </li>
+      {%- if collections.postStats.avgCodeBlockCount > 0 -%}
+        <li>
+          <strong>Average code blocks per post:</strong>
+          {{ collections.postStats.avgCodeBlockCount | commaize }}
+        </li>
+      {% endif %}
+    </ul>
 
-  <h2>Yearly Statistics</h2>
-  <p>Shoulder ground round pork belly corned beef chuck beef bacon bresaola. Ball tip buffalo pork chop shoulder. Tenderloin pork loin bacon ham cow. Buffalo pork belly salami prosciutto, t-bone tri-tip shank flank cow pork chop pastrami burgdoggen turkey bresaola. Capicola shank doner filet mignon. Salami ball tip shoulder doner beef ribs strip steak prosciutto venison. Shankle jerky strip steak turkey tongue short ribs beef ribs ham hock buffalo tenderloin spare ribs.</p>
-  <table>
-    <thead>
-      <tr>
-        <th>Year</th>
-        <th>Post Count</th>
-        <th>Avg. Days Between Posts&nbsp;</th>
-        <th>Avg. Characters</th>
-        <th>Avg. Words</th>
-        <th>Avg. Paragraphs</th>
-        {% if collections.postStats.avgCodeBlockCount > 0 %}
-          <th>Avg. Code Blocks</th>
-        {%- endif -%}
-      </tr>
-    </thead>
-    <tbody>
-      {% for year in collections.postStats.years %}
+    <h2>Yearly Statistics</h2>
+    <p>Shoulder ground round pork belly corned beef chuck beef bacon bresaola. Ball tip buffalo pork chop shoulder. Tenderloin pork loin bacon ham cow. Buffalo pork belly salami prosciutto, t-bone tri-tip shank flank cow pork chop pastrami burgdoggen turkey bresaola. Capicola shank doner filet mignon. Salami ball tip shoulder doner beef ribs strip steak prosciutto venison. Shankle jerky strip steak turkey tongue short ribs beef ribs ham hock buffalo tenderloin spare ribs.</p>
+    <table>
+      <thead>
         <tr>
-          <td>
-            <strong>{{ year.year }}</strong>
-          </td>
-          <td>{{ year.postCount | commaize }}</td>
-          <td>{{ year.avgDays | commaize }}</td>
-          <td>{{ year.avgCharacterCount | commaize }}</td>
-          <td>{{ year.avgWordCount | commaize }}</td>
-          <td>{{ year.avgParagraphCount | commaize }}</td>
-          {%- if collections.postStats.avgCodeBlockCount > 0 -%}
-            <td>{{ year.avgCodeBlockCount | commaize }}</td>
+          <th>Year</th>
+          <th>Post Count</th>
+          <th>Avgerage Days Between Posts&nbsp;</th>
+          <th>Avgerage Characters</th>
+          <th>Avgerage Words</th>
+          <th>Avgerage Paragraphs</th>
+          {% if collections.postStats.avgCodeBlockCount > 0 %}
+            <th>Avgerage Code Blocks</th>
           {%- endif -%}
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for year in collections.postStats.years %}
+          <tr>
+            <td>
+              <strong>{{ year.year }}</strong>
+            </td>
+            <td>{{ year.postCount | commaize }}</td>
+            <td>{{ year.avgDays | commaize }}</td>
+            <td>{{ year.avgCharacterCount | commaize }}</td>
+            <td>{{ year.avgWordCount | commaize }}</td>
+            <td>{{ year.avgParagraphCount | commaize }}</td>
+            {%- if collections.postStats.avgCodeBlockCount > 0 -%}
+              <td>{{ year.avgCodeBlockCount | commaize }}</td>
+            {%- endif -%}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-  <h2>Post Statistics</h2>
-  <div class="chart-container">
-    <canvas id="statsChart1"></canvas>
-  </div>
-  <h2>Content Statistics</h2>
-  <div class="chart-container">
-    <canvas id="statsChart2"></canvas>
-  </div>
+    <h2>Post Statistics</h2>
+    <p>Tongue pig kielbasa boudin chislic salami. Meatball rump venison bacon. Alcatra biltong leberkas, ground round andouille burgdoggen bresaola filet mignon shank. Porchetta shankle ribeye brisket turducken beef tenderloin, meatball short loin corned beef andouille t-bone chuck landjaeger bacon.</p>
+    <div class="chart-container">
+      <canvas id="statsChart1"></canvas>
+    </div>
+    <h2>Content Statistics (Part 1)</h2>
+    <p>Cupim hamburger kielbasa short loin spare ribs drumstick. Brisket ham hock swine, leberkas venison frankfurter bresaola meatloaf capicola pig andouille spare ribs chicken. Ball tip salami ham, pork meatloaf shank porchetta. Chicken venison biltong t-bone shoulder. Tenderloin porchetta drumstick, prosciutto ribeye hamburger shank.</p>
+    <div class="chart-container">
+      <canvas id="statsChart2"></canvas>
+    </div>
+    <h2>Content Statistics (Part 2)</h2>
+    <p>Bacon ipsum dolor amet alcatra meatloaf shoulder, sausage strip steak flank bresaola. Kielbasa biltong salami, prosciutto meatball shoulder bacon fatback drumstick beef ribs ribeye. Meatball bresaola andouille sausage, pig tail pork chop shank. Jerky pork frankfurter pig meatball chislic.</p>
+    <div class="chart-container">
+      <canvas id="statsChart3"></canvas>
+    </div>
 
-{% else %}
-  <p>
-    <strong>No data to display</strong>
-  </p>
-{% endif %}
+  {% else %}
+    <p>
+      <strong>No data to display</strong>
+    </p>
+  {% endif %}
+
+  <footer>
+    <hr/>
+    <p>by
+      <a href="https://johnwargo.com" target="_blank">John M. Wargo &nearr;</a>
+      | Page styling via
+      <a href="https://andybrewer.github.io/mvp/" target="_blank">MVP CSS &nearr;</a>
+      | Sample posts generated using
+      <a href="https://github.com/johnwargo/eleventy-generate-posts" target="_blank">Eleventy Generate Posts &nearr;</a>.
+    </p>
+  </footer>
+</main>
 
 <!-- Chart Scripts -->
 
@@ -125,13 +146,6 @@ title: Eleventy Plugin Post Stats
         order: 3
       }
     ]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
   }
 });
 </script>
@@ -152,30 +166,34 @@ title: Eleventy Plugin Post Stats
         type: 'line',
         label: 'Avg. Words per Post',
         data: [{% for year in collections.postStats.years %}{{ year.avgWordCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
-        borderWidth: 1,
         order: 2
-      }, {
-        type: 'line',
+      }
+    ]
+  }
+});
+</script>
+
+<script>
+  const ctx3 = document.getElementById('statsChart3');
+  new Chart(ctx3, {
+    data: {
+      labels: [{% for year in collections.postStats.years %}'{{ year.year }}'{%- unless forloop.last %},{% endunless %}{% endfor %}],
+    datasets: [
+      {
+        type: 'bar',
         label: 'Avg. Paragraphs per Post',
         data: [{% for year in collections.postStats.years %}{{ year.avgParagraphCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
         borderWidth: 1,
-        order: 3
+        order: 1
       }
       {% if collections.postStats.avgCodeBlockCount > 0 %}, {
           type: 'line',
           label: 'Avg. Code Blocks per Post',
           data: [{% for year in collections.postStats.years %}{{ year.avgCodeBlockCount }}{%- unless forloop.last %},{% endunless %}{% endfor %}],
-          order: 4
+          order: 2
         }
       {% endif %}
     ]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
   }
 });
 </script>

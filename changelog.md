@@ -1,5 +1,9 @@
 # Changelog
 
+## 20230717 0.1.6
+
+Modified options to allow using something other than `post` to build the collection of items processed. You can set the tag when you add the plugin to the Eleventy project.
+
 ## 20230716 0.1.5
 
 * Fixed an error in the `index.liquid` file, data for yearly word count and paragraph count were swapped in the table.
