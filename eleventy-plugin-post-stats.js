@@ -55,7 +55,7 @@ module.exports = function (eleventyConfig, options = {}) {
         console.dir(options.tags);
         console.dir(tags);
         console.dir(...tags);
-        const posts = collectionApi.getFilteredByTags(tags).sort(byDate);
+        const posts = collectionApi.getFilteredByTags(...tags).sort(byDate);
         const postCount = posts.length;
         const statsObject = {
             avgDays: 0,
