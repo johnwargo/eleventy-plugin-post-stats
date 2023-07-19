@@ -39,7 +39,7 @@ type YearStats = {
 
 type ModuleOptions = {
   debugMode?: boolean,
-  tag?: string
+  tags?: string[]
 }
 
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
@@ -104,9 +104,10 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
     const debugMode = options.debugMode || false;
     // get the tag to use for the collection, default to post
-    const tag = options.tag || 'post';
+    const tags = options.tags || ['post'];
+    console.dir(tags);
     // sort by date just to make sure
-    const posts = collectionApi.getFilteredByTags(tag).sort(byDate);
+    const posts = collectionApi.getFilteredByTags(tags).sort(byDate);
     const postCount = posts.length;
 
     //initialize the data object returned by the plugin 
@@ -141,7 +142,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     if (debugMode) {
       console.log(`[${APP_NAME}] Debug mode enabled`);
     }
-    console.log(`[${APP_NAME}] Generating statistics for ${postCount} "${tag}" items`);
+    console.log(`[${APP_NAME}] Generating statistics for ${postCount} "${tags}" items`);
     if (debugMode) console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
     console.time(durationStr);
 

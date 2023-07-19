@@ -2,10 +2,10 @@ const postStats = require('./eleventy-plugin-post-stats.js');
 
 module.exports = eleventyConfig => {
 
-  eleventyConfig.addPlugin(postStats);
+  // eleventyConfig.addPlugin(postStats);
   // eleventyConfig.addPlugin(postStats, {debugMode: true});  
-  // eleventyConfig.addPlugin(postStats, { tag: "news" });
-  // eleventyConfig.addPlugin(postStats, {debugMode: true, tag: "news"});
+  // eleventyConfig.addPlugin(postStats, { tags: ["news"] });
+  eleventyConfig.addPlugin(postStats, {debugMode: true, tags: ["post", "news"]});
 
   eleventyConfig.addFilter("commaize", function (num, locale = "en-us") {
     return num.toLocaleString(locale);

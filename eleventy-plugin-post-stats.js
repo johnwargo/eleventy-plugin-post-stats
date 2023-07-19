@@ -51,8 +51,9 @@ function processPostFile(filePath, debugMode) {
 module.exports = function (eleventyConfig, options = {}) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
         const debugMode = options.debugMode || false;
-        const tag = options.tag || 'post';
-        const posts = collectionApi.getFilteredByTags(tag).sort(byDate);
+        const tags = options.tags || ['post'];
+        console.dir(tags);
+        const posts = collectionApi.getFilteredByTags(tags).sort(byDate);
         const postCount = posts.length;
         const statsObject = {
             avgDays: 0,
@@ -83,7 +84,7 @@ module.exports = function (eleventyConfig, options = {}) {
         if (debugMode) {
             console.log(`[${APP_NAME}] Debug mode enabled`);
         }
-        console.log(`[${APP_NAME}] Generating statistics for ${postCount} "${tag}" items`);
+        console.log(`[${APP_NAME}] Generating statistics for ${postCount} "${tags}" items`);
         if (debugMode)
             console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
         console.time(durationStr);
