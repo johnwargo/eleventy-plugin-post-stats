@@ -52,7 +52,9 @@ module.exports = function (eleventyConfig, options = {}) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
         const debugMode = options.debugMode || false;
         const tags = options.tags || ['post'];
+        console.dir(options.tags);
         console.dir(tags);
+        console.dir(...tags);
         const posts = collectionApi.getFilteredByTags(tags).sort(byDate);
         const postCount = posts.length;
         const statsObject = {

@@ -104,10 +104,12 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
     const debugMode = options.debugMode || false;
     // get the tag to use for the collection, default to post
-    const tags = options.tags || ['post'];
+    const tags: string[] = options.tags || ['post'];
+    console.dir(options.tags);
     console.dir(tags);
+    console.dir(...tags);
     // sort by date just to make sure
-    const posts = collectionApi.getFilteredByTags(tags).sort(byDate);
+    const posts = collectionApi.getFilteredByTags(...tags).sort(byDate);
     const postCount = posts.length;
 
     //initialize the data object returned by the plugin 
