@@ -2,6 +2,8 @@
 
 This is an Eleventy plugin that generates a site posts statistics collection you can use in [Eleventy](https://www.11ty.dev/) sites to display stats for your site. Here is an example from [johnwargo.com](https://johnwargo.com/statistics/).
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/115f4c2d-998f-4010-a1cf-ca0c3973b4d5/deploy-status)](https://app.netlify.com/sites/eleventy-plugin-post-stats/deploys)
+
 The repository includes a complete Eleventy project you can serve to see the plugin in action; [see it now](https://eleventy-plugin-post-stats.netlify.app/).
 
 **Note:** The plugin assumes your post files are in markdown format and tagged with `post`.

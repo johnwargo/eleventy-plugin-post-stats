@@ -4,9 +4,9 @@ module.exports = eleventyConfig => {
 
   const debugMode = false;
 
-  // eleventyConfig.addPlugin(postStats);
+  eleventyConfig.addPlugin(postStats);
   // eleventyConfig.addPlugin(postStats, {debugMode});  
-  eleventyConfig.addPlugin(postStats, { debugMode, tags: ['post', 'news'] });
+  // eleventyConfig.addPlugin(postStats, { debugMode, tags: ['post', 'news'] });
   // eleventyConfig.addPlugin(postStats, { debugMode, tags: ['news'] });
   // eleventyConfig.addPlugin(postStats, { debugMode, tags: ['post', 'news'] });
 
