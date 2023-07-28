@@ -81,14 +81,14 @@ module.exports = function (eleventyConfig, options = {}) {
         const tags = options.tags || ['post'];
         var posts = [];
         for (let tag of tags) {
-            console.log(`[${APP_NAME}] Getting articles tagged with "${tag}".`);
+            console.log(`[${APP_NAME}] Getting articles tagged with "${tag}"`);
             let tagPosts = collectionApi.getFilteredByTag(tag);
-            console.log(`[${APP_NAME}] Found ${tagPosts.length} "${tag}" articles.`);
+            console.log(`[${APP_NAME}] Found ${tagPosts.length} "${tag}" articles`);
             posts.push(...tagPosts);
         }
         const postCount = posts.length;
         if (postCount < 1) {
-            console.log(`[${APP_NAME}] No articles found for tag(s): ${tags.join(', ')}.`);
+            console.log(`[${APP_NAME}] No articles found for tag(s): ${tags.join(', ')}`);
             return statsObject;
         }
         posts = posts.sort(byDate);
@@ -97,8 +97,8 @@ module.exports = function (eleventyConfig, options = {}) {
         statsObject.lastPostDate = posts[postCount - 1].data.page.date;
         var prevPostDate = posts[0].data.page.date;
         var currentYear = prevPostDate.getFullYear();
-        console.log(`[${APP_NAME}] Generating statistics for ${postCount} articles.`);
-        console.log(`[${APP_NAME}] Processing articles for ${currentYear}.`);
+        console.log(`[${APP_NAME}] Generating statistics for ${postCount} articles`);
+        console.log(`[${APP_NAME}] Processing articles for ${currentYear}`);
         console.time(durationStr);
         for (let post of posts) {
             let postDate = post.data.page.date;
@@ -106,7 +106,7 @@ module.exports = function (eleventyConfig, options = {}) {
             let thisYear = postDate.getFullYear();
             if (thisYear != currentYear) {
                 if (debugMode)
-                    console.log(`[${APP_NAME}] Processing ${thisYear} posts`);
+                    console.log(`[${APP_NAME}] Processing articles for ${thisYear}`);
                 avgDays = yearPostDays / yearPostCount;
                 let yearStats = {
                     year: currentYear,
