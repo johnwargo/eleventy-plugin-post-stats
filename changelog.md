@@ -4,6 +4,8 @@
 
 **Breaking Change** Realizing a few minutes after I published the last update that I added support for a single tag when I should have allowed for multiple tags. So, in this release, I changed the `tag` configuration option to `tags` and expect an array of strings instead of a single string value.
 
+Right now it only supports articles with a single tag although you can generate stats on multiple tags. If you need this plugin to support multiple tags applied to the same article without duplicates, let me know and I'll add a dedupe to the plugin before generating stats.
+
 ## 20230717 0.1.6
 
 Modified options to allow using something other than `post` to build the collection of items processed. You can set the tag when you add the plugin to the Eleventy project.

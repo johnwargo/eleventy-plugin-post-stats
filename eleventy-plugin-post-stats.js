@@ -50,24 +50,6 @@ function processPostFile(filePath, debugMode) {
 }
 module.exports = function (eleventyConfig, options = {}) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
-        const debugMode = options.debugMode || false;
-        const tags = options.tags || ['post'];
-        console.dir(options.tags);
-        console.dir(tags);
-        console.dir(...tags);
-        const posts = collectionApi.getFilteredByTags(...tags).sort(byDate);
-        const postCount = posts.length;
-        const statsObject = {
-            avgDays: 0,
-            avgCharacterCount: 0,
-            avgCodeBlockCount: 0,
-            avgParagraphCount: 0,
-            avgWordCount: 0,
-            postCount: postCount,
-            firstPostDate: posts[0].data.page.date,
-            lastPostDate: posts[postCount - 1].data.page.date,
-            years: []
-        };
         var avgDays = 0;
         var totalDays = 0;
         var totalPostCount = 0;
@@ -81,19 +63,47 @@ module.exports = function (eleventyConfig, options = {}) {
         var yearWordCount = 0;
         var yearPostCount = 0;
         var yearPostDays = 0;
-        var prevPostDate = posts[0].data.page.date;
-        var currentYear = prevPostDate.getFullYear();
+        const statsObject = {
+            avgDays: 0,
+            avgCharacterCount: 0,
+            avgCodeBlockCount: 0,
+            avgParagraphCount: 0,
+            avgWordCount: 0,
+            postCount: 0,
+            firstPostDate: new Date(),
+            lastPostDate: new Date(),
+            years: []
+        };
+        const debugMode = options.debugMode || false;
         if (debugMode) {
             console.log(`[${APP_NAME}] Debug mode enabled`);
         }
-        console.log(`[${APP_NAME}] Generating statistics for ${postCount} "${tags}" items`);
-        if (debugMode)
-            console.log(`[${APP_NAME}] Processing ${currentYear} posts`);
+        const tags = options.tags || ['post'];
+        var posts = [];
+        for (let tag of tags) {
+            console.log(`[${APP_NAME}] Getting articles tagged with "${tag}".`);
+            let tagPosts = collectionApi.getFilteredByTag(tag);
+            console.log(`[${APP_NAME}] Found ${tagPosts.length} "${tag}" articles.`);
+            posts.push(...tagPosts);
+        }
+        const postCount = posts.length;
+        if (postCount < 1) {
+            console.log(`[${APP_NAME}] No articles found for tag(s): ${tags.join(', ')}.`);
+            return statsObject;
+        }
+        posts = posts.sort(byDate);
+        statsObject.postCount = postCount;
+        statsObject.firstPostDate = posts[0].data.page.date;
+        statsObject.lastPostDate = posts[postCount - 1].data.page.date;
+        var prevPostDate = posts[0].data.page.date;
+        var currentYear = prevPostDate.getFullYear();
+        console.log(`[${APP_NAME}] Generating statistics for ${postCount} articles.`);
+        console.log(`[${APP_NAME}] Processing articles for ${currentYear}.`);
         console.time(durationStr);
         for (let post of posts) {
-            const postDate = post.data.page.date;
-            const daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
-            var thisYear = postDate.getFullYear();
+            let postDate = post.data.page.date;
+            let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
+            let thisYear = postDate.getFullYear();
             if (thisYear != currentYear) {
                 if (debugMode)
                     console.log(`[${APP_NAME}] Processing ${thisYear} posts`);

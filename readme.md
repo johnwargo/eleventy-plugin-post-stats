@@ -45,16 +45,20 @@ module.exports = eleventyConfig => {
 
 With this in place, you Eleventy site has a new collection called `postStats`, you can access it using `collections.postStats`.  
 
-By default, the plugin processes all posts tagged with a `tag` of `post`. If you want statistics calculated based on posts with a different `tag` value, specify the `tags` property containing an array of tags in the options passed to the plugin when you add it in your Eleventy project. For example, to calculate statistics for all `news` items, add the plugin to your project using the following:
+By default, the plugin processes all posts tagged with a `tag` of `post`. If you want statistics calculated based on posts with a different `tag` value, specify the `tags` property containing an array of tags in the options passed to the plugin when you add it in your Eleventy project.
+
+**Note:** The plugin assumes each article is tagged with a single tag. If your site has multiple tags assigned to an article, it will get counted more that once in the stats: once for each tag value.
+
+For example, to calculate statistics for all articles tagges with `news`, add the plugin to your project using the following:
 
 ```js
-eleventyConfig.addPlugin(postStats, { tags: ["news"] });
+eleventyConfig.addPlugin(postStats, { tags: ['news'] });
 ```
 
-If, for example, you want to process posts and news items, add the plugin to your project using:
+If you want to process both posts and news items, add the plugin to your project passing in an array listing the tags:
 
 ```js
-eleventyConfig.addPlugin(postStats, { tags: ["post", "news"] });
+eleventyConfig.addPlugin(postStats, { tags: ['post', 'news'] });
 ```
 
 You can enhance the output the plugin sends to the terminal as the plugin executes by enabling Debug Mode:
@@ -66,7 +70,19 @@ eleventyConfig.addPlugin(postStats, { debugMode: true });
 Enable both using:
 
 ```js
-eleventyConfig.addPlugin(postStats, { debugMode: true, tag: ["post"] });
+eleventyConfig.addPlugin(postStats, { debugMode: true, tag: ['post'] });
+```
+
+or
+
+```js
+eleventyConfig.addPlugin(postStats, { debugMode: true, tag: ['news'] });
+```
+
+or
+
+```js
+eleventyConfig.addPlugin(postStats, { debugMode: true, tag: ['post', 'news'] });
 ```
 
 When the plugin executes during an Eleventy site build, loops through all of your site's posts and builds the following collection:
@@ -186,7 +202,7 @@ Refer to this project's [index.liquid](https://github.com/johnwargo/eleventy-plu
 To view hte sample statistics page, make a local clone of the repo then:
 
 1. Open a terminal window or command prompt and execute the following command: `npm install`
-2. start the `serve` process by executing `npm start`
+2. Start the `serve` process by executing `npm start`
 3. Click the link to launch the site in the browser.
 
 ## Notes
