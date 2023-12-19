@@ -1,5 +1,9 @@
 # Changelog
 
+## 20231219 0.2.1
+
+Added average posts per year property.
+
 ## 20230719 0.2.0
 
 **Breaking Change** Realizing a few minutes after I published the last update that I added support for a single tag when I should have allowed for multiple tags. So, in this release, I changed the `tag` configuration option to `tags` and expect an array of strings instead of a single string value.

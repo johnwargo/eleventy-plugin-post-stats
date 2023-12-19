@@ -20,6 +20,7 @@ type StatsObject = {
   avgCharacterCount: number,
   avgCodeBlockCount: number
   avgParagraphCount: number,
+  avgPostsPerYear: number,
   avgWordCount: number,
   firstPostDate: Date,
   lastPostDate: Date,
@@ -61,9 +62,7 @@ function countCodeBlocks(content: string): number {
 }
 
 function processPostFile(filePath: string, debugMode: boolean): ContentStats {
-
   if (debugMode) console.log(`[${APP_NAME}] Processing ${filePath}`);
-
   try {
     // read the file
     let content = fs.readFileSync(filePath, 'utf8');
@@ -122,6 +121,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
       avgCharacterCount: 0,
       avgCodeBlockCount: 0,
       avgParagraphCount: 0,
+      avgPostsPerYear: 0,
       avgWordCount: 0,
       postCount: 0,
       firstPostDate: new Date(),
@@ -150,7 +150,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
       console.log(`[${APP_NAME}] No articles found for tag(s): ${tags.join(', ')}`);
       // return the empty stats object
       return statsObject;
-    } 
+    }
 
     // sort by date just to make sure
     posts = posts.sort(byDate);
@@ -161,7 +161,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     statsObject.lastPostDate = posts[postCount - 1].data.page.date;
     var prevPostDate = posts[0].data.page.date;
     var currentYear = prevPostDate.getFullYear();
-    
+
     console.log(`[${APP_NAME}] Generating statistics for ${postCount} articles`);
     console.log(`[${APP_NAME}] Processing articles for ${currentYear}`);
     console.time(durationStr);
@@ -243,6 +243,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     statsObject.avgCharacterCount = parseFloat((totalCharacterCount / totalPostCount).toFixed(2));
     statsObject.avgCodeBlockCount = parseFloat((totalCodeBlockCount / totalPostCount).toFixed(2));
     statsObject.avgParagraphCount = parseFloat((totalParagraphCount / totalPostCount).toFixed(2));
+    statsObject.avgPostsPerYear = parseFloat((totalPostCount / statsObject.years.length).toFixed(2));
     statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
 
     console.log(`[${APP_NAME}] Completed post stats generation`);

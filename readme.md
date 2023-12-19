@@ -95,6 +95,7 @@ When the plugin executes during an Eleventy site build, loops through all of you
   "avgCharacterCount": 2034.27,
   "avgCodeBlockCount": 0.02,
   "avgParagraphCount": 3.25,
+  "avgPostsPerYear": 27.5,
   "avgWordCount": 366.45,
   "postCount": 100,
   "firstPostDate": "2020-06-20T00:00:00.000Z",
@@ -137,6 +138,7 @@ At the root level are the following properties:
 * `avgCharacterCount`: The average number of post characters per post for the entire site.
 * `avgCodeBlockCount`: The average number of code blocks per post for the entire site.
 * `avgParagraphCount`: The average number of paragraphs per post for the entire site.
+* `avgPostsPerYear`: The average number of posts per year.
 * `avgWordCount`" The average number of words per post for the entire site.
 * `postCount`: The total number of posts in the site
 * `firstPostDate`: The timestamp for the first post published

@@ -68,6 +68,7 @@ module.exports = function (eleventyConfig, options = {}) {
             avgCharacterCount: 0,
             avgCodeBlockCount: 0,
             avgParagraphCount: 0,
+            avgPostsPerYear: 0,
             avgWordCount: 0,
             postCount: 0,
             firstPostDate: new Date(),
@@ -158,6 +159,7 @@ module.exports = function (eleventyConfig, options = {}) {
         statsObject.avgCharacterCount = parseFloat((totalCharacterCount / totalPostCount).toFixed(2));
         statsObject.avgCodeBlockCount = parseFloat((totalCodeBlockCount / totalPostCount).toFixed(2));
         statsObject.avgParagraphCount = parseFloat((totalParagraphCount / totalPostCount).toFixed(2));
+        statsObject.avgPostsPerYear = parseFloat((totalPostCount / statsObject.years.length).toFixed(2));
         statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
         console.log(`[${APP_NAME}] Completed post stats generation`);
         console.timeEnd(durationStr);
