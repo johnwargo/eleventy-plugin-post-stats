@@ -1,6 +1,6 @@
 # Changelog
 
-## 20231219 0.2.1
+## 20231219 0.2.2
 
 Added average posts per year property.
 
