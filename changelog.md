@@ -1,5 +1,9 @@
 # Changelog
 
+## 20231223 0.2.3
+
+Added support for [cli-logger](https://www.npmjs.com/package/cli-logger) to make it easier to format console output.
+
 ## 20231219 0.2.2
 
 Added average posts per year property.

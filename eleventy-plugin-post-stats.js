@@ -1,9 +1,19 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 const fs = require('fs');
+const cli_logger_1 = __importDefault(require("cli-logger"));
 const writingStats = require('writing-stats');
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
 const durationStr = `[${APP_NAME}] Duration`;
 const oneDayMilliseconds = 1000 * 60 * 60 * 24;
+var conf = { console: true, level: cli_logger_1.default.INFO };
+conf.prefix = function (record) {
+    return `[${APP_NAME}]`;
+};
+var log = (0, cli_logger_1.default)(conf);
 function byDate(a, b) {
     return a.date - b.date;
 }
@@ -19,7 +29,7 @@ function countCodeBlocks(content) {
 }
 function processPostFile(filePath, debugMode) {
     if (debugMode)
-        console.log(`[${APP_NAME}] Processing ${filePath}`);
+        log.info(`Processing ${filePath}`);
     try {
         let content = fs.readFileSync(filePath, 'utf8');
         content = content.replace(/---\n.*?\n---/s, '');
@@ -29,7 +39,7 @@ function processPostFile(filePath, debugMode) {
         let stats = writingStats(content);
         if (debugMode) {
             console.dir(stats);
-            console.log();
+            log.info();
         }
         return {
             characterCount: stats.characterCount,
@@ -76,20 +86,19 @@ module.exports = function (eleventyConfig, options = {}) {
             years: []
         };
         const debugMode = options.debugMode || false;
-        if (debugMode) {
-            console.log(`[${APP_NAME}] Debug mode enabled`);
-        }
+        log.level(debugMode ? log.DEBUG : log.INFO);
+        log.debug('Debug mode enabled\n');
         const tags = options.tags || ['post'];
         var posts = [];
         for (let tag of tags) {
-            console.log(`[${APP_NAME}] Getting articles tagged with "${tag}"`);
+            log.info(`Getting articles tagged with "${tag}"`);
             let tagPosts = collectionApi.getFilteredByTag(tag);
-            console.log(`[${APP_NAME}] Found ${tagPosts.length} "${tag}" articles`);
+            log.info(`Found ${tagPosts.length} "${tag}" articles`);
             posts.push(...tagPosts);
         }
         const postCount = posts.length;
         if (postCount < 1) {
-            console.log(`[${APP_NAME}] No articles found for tag(s): ${tags.join(', ')}`);
+            log.info(`No articles found for tag(s): ${tags.join(', ')}`);
             return statsObject;
         }
         posts = posts.sort(byDate);
@@ -98,8 +107,8 @@ module.exports = function (eleventyConfig, options = {}) {
         statsObject.lastPostDate = posts[postCount - 1].data.page.date;
         var prevPostDate = posts[0].data.page.date;
         var currentYear = prevPostDate.getFullYear();
-        console.log(`[${APP_NAME}] Generating statistics for ${postCount} articles`);
-        console.log(`[${APP_NAME}] Processing articles for ${currentYear}`);
+        log.info(`Generating statistics for ${postCount} articles`);
+        log.info(`Processing articles for ${currentYear}`);
         console.time(durationStr);
         for (let post of posts) {
             let postDate = post.data.page.date;
@@ -107,7 +116,7 @@ module.exports = function (eleventyConfig, options = {}) {
             let thisYear = postDate.getFullYear();
             if (thisYear != currentYear) {
                 if (debugMode)
-                    console.log(`[${APP_NAME}] Processing articles for ${thisYear}`);
+                    log.info(`Processing articles for ${thisYear}`);
                 avgDays = yearPostDays / yearPostCount;
                 let yearStats = {
                     year: currentYear,
@@ -161,13 +170,13 @@ module.exports = function (eleventyConfig, options = {}) {
         statsObject.avgParagraphCount = parseFloat((totalParagraphCount / totalPostCount).toFixed(2));
         statsObject.avgPostsPerYear = parseFloat((totalPostCount / statsObject.years.length).toFixed(2));
         statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
-        console.log(`[${APP_NAME}] Completed post stats generation`);
+        log.info(`Completed post stats generation`);
         console.timeEnd(durationStr);
         if (debugMode) {
-            console.log(`\n[${APP_NAME}] Post Stats Object`);
-            console.log('-'.repeat(50));
+            log.info(`\nPost Stats Object`);
+            log.info('-'.repeat(50));
             console.dir(statsObject);
-            console.log();
+            log.info();
         }
         return statsObject;
     });

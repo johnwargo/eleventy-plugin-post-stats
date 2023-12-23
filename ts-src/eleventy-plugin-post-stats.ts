@@ -6,6 +6,8 @@
  ***********************************************/
 
 const fs = require('fs');
+//@ts-ignore
+import logger from 'cli-logger';
 const writingStats = require('writing-stats');
 
 type ContentStats = {
@@ -47,6 +49,13 @@ const APP_NAME = 'Eleventy-Plugin-Post-Stats';
 const durationStr = `[${APP_NAME}] Duration`;
 const oneDayMilliseconds = 1000 * 60 * 60 * 24;
 
+// configure the logger
+var conf: any = { console: true, level: logger.INFO };
+conf.prefix = function (record: any) {
+  return `[${APP_NAME}]`;
+}
+var log = logger(conf);
+
 function byDate(a: any, b: any) {
   return a.date - b.date;
 }
@@ -62,7 +71,7 @@ function countCodeBlocks(content: string): number {
 }
 
 function processPostFile(filePath: string, debugMode: boolean): ContentStats {
-  if (debugMode) console.log(`[${APP_NAME}] Processing ${filePath}`);
+  if (debugMode) log.info(`Processing ${filePath}`);
   try {
     // read the file
     let content = fs.readFileSync(filePath, 'utf8');
@@ -79,7 +88,7 @@ function processPostFile(filePath: string, debugMode: boolean): ContentStats {
     let stats = writingStats(content);
     if (debugMode) {
       console.dir(stats);
-      console.log();
+      log.info();
     }
     return {
       characterCount: stats.characterCount,
@@ -130,9 +139,9 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     }
 
     const debugMode = options.debugMode || false;
-    if (debugMode) {
-      console.log(`[${APP_NAME}] Debug mode enabled`);
-    }
+    log.level(debugMode ? log.DEBUG : log.INFO);
+    log.debug('Debug mode enabled\n');
+
     // get the tag to use for the collection, default to post
     const tags: string[] = options.tags || ['post'];
     // make an empty array for the posts
@@ -140,14 +149,14 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     // Process each tag separately since getFilteredByTag looks for
     // posts with all of the tags, not just the one we want
     for (let tag of tags) {
-      console.log(`[${APP_NAME}] Getting articles tagged with "${tag}"`);
+      log.info(`Getting articles tagged with "${tag}"`);
       let tagPosts = collectionApi.getFilteredByTag(tag);
-      console.log(`[${APP_NAME}] Found ${tagPosts.length} "${tag}" articles`);
+      log.info(`Found ${tagPosts.length} "${tag}" articles`);
       posts.push(...tagPosts);
     }
     const postCount = posts.length;
     if (postCount < 1) {
-      console.log(`[${APP_NAME}] No articles found for tag(s): ${tags.join(', ')}`);
+      log.info(`No articles found for tag(s): ${tags.join(', ')}`);
       // return the empty stats object
       return statsObject;
     }
@@ -162,8 +171,8 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     var prevPostDate = posts[0].data.page.date;
     var currentYear = prevPostDate.getFullYear();
 
-    console.log(`[${APP_NAME}] Generating statistics for ${postCount} articles`);
-    console.log(`[${APP_NAME}] Processing articles for ${currentYear}`);
+    log.info(`Generating statistics for ${postCount} articles`);
+    log.info(`Processing articles for ${currentYear}`);
     console.time(durationStr);
 
     for (let post of posts) {
@@ -172,7 +181,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
       // Did we change year?
       let thisYear = postDate.getFullYear();
       if (thisYear != currentYear) {
-        if (debugMode) console.log(`[${APP_NAME}] Processing articles for ${thisYear}`);
+        if (debugMode) log.info(`Processing articles for ${thisYear}`);
         // calculate the average days between posts
         avgDays = yearPostDays / yearPostCount;
         // Add our year stats to the object
@@ -246,14 +255,14 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     statsObject.avgPostsPerYear = parseFloat((totalPostCount / statsObject.years.length).toFixed(2));
     statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
 
-    console.log(`[${APP_NAME}] Completed post stats generation`);
+    log.info(`Completed post stats generation`);
     console.timeEnd(durationStr);
 
     if (debugMode) {
-      console.log(`\n[${APP_NAME}] Post Stats Object`);
-      console.log('-'.repeat(50));
+      log.info(`\nPost Stats Object`);
+      log.info('-'.repeat(50));
       console.dir(statsObject);
-      console.log();
+      log.info();
     }
 
     return statsObject;

@@ -20,9 +20,11 @@
   ],
   "dependencies": {
     "@11ty/eleventy": "^2.0.1",
+    "cli-logger": "^0.5.40",
     "writing-stats": "^1.0.6"
   },
   "devDependencies": {
-    "@types/node": "^20.4.2"
+    "@types/node": "^20.4.2",
+    "typescript": "^5.3.3"
   }
 }
