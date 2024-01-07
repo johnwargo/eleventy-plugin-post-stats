@@ -1,6 +1,6 @@
 {
   "name": "eleventy-plugin-post-stats",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Post Statistics Eleventy Plugin",
   "author": "John M. Wargo",
   "license": "MIT",
