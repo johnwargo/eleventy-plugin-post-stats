@@ -5,10 +5,11 @@
  * https://johnwargo.com
  ***********************************************/
 
-const fs = require('fs');
+import fs from 'fs';
 //@ts-ignore
 import logger from 'cli-logger';
-const writingStats = require('writing-stats');
+//@ts-ignore
+import writingStats from 'writing-stats';
 
 type ContentStats = {
   characterCount: number,
@@ -252,8 +253,14 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     statsObject.avgCharacterCount = parseFloat((totalCharacterCount / totalPostCount).toFixed(2));
     statsObject.avgCodeBlockCount = parseFloat((totalCodeBlockCount / totalPostCount).toFixed(2));
     statsObject.avgParagraphCount = parseFloat((totalParagraphCount / totalPostCount).toFixed(2));
-    statsObject.avgPostsPerYear = parseFloat((totalPostCount / statsObject.years.length).toFixed(2));
     statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
+
+    // now, for average posts per year, ignore the current year. (v0.2.4)
+    var tmpCount = 0;
+    for (let i = 0; i < statsObject.years.length - 1; i++) {
+      tmpCount += statsObject.years[i].postCount;
+    }    
+    statsObject.avgPostsPerYear = parseFloat((tmpCount / (statsObject.years.length - 1)).toFixed(2));
 
     log.info(`Completed post stats generation`);
     console.timeEnd(durationStr);

@@ -26,8 +26,8 @@ title: Eleventy Plugin Post Stats Example
       </li>
       <li>
         <strong>Average posts per year:</strong>
-        {{ collections.postStats.avgPostsPerYear | commaize }}
-      </li>      
+        {{ collections.postStats.avgPostsPerYear | commaize }} (excludes current year)
+      </li>     
       <li>
         <strong>Average days between posts:</strong>
         {{ collections.postStats.avgDays | commaize }}

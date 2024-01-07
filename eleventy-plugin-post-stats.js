@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs = require('fs');
+const fs_1 = __importDefault(require("fs"));
 const cli_logger_1 = __importDefault(require("cli-logger"));
-const writingStats = require('writing-stats');
+const writing_stats_1 = __importDefault(require("writing-stats"));
 const APP_NAME = 'Eleventy-Plugin-Post-Stats';
 const durationStr = `[${APP_NAME}] Duration`;
 const oneDayMilliseconds = 1000 * 60 * 60 * 24;
@@ -31,12 +31,12 @@ function processPostFile(filePath, debugMode) {
     if (debugMode)
         log.info(`Processing ${filePath}`);
     try {
-        let content = fs.readFileSync(filePath, 'utf8');
+        let content = fs_1.default.readFileSync(filePath, 'utf8');
         content = content.replace(/---\n.*?\n---/s, '');
         content = content.replace(/^\s*[\r\n]/gm, '');
         let codeBlocks = countCodeBlocks(content);
         content = content.replace(/(```.+?```)/gms, '');
-        let stats = writingStats(content);
+        let stats = (0, writing_stats_1.default)(content);
         if (debugMode) {
             console.dir(stats);
             log.info();
@@ -168,8 +168,12 @@ module.exports = function (eleventyConfig, options = {}) {
         statsObject.avgCharacterCount = parseFloat((totalCharacterCount / totalPostCount).toFixed(2));
         statsObject.avgCodeBlockCount = parseFloat((totalCodeBlockCount / totalPostCount).toFixed(2));
         statsObject.avgParagraphCount = parseFloat((totalParagraphCount / totalPostCount).toFixed(2));
-        statsObject.avgPostsPerYear = parseFloat((totalPostCount / statsObject.years.length).toFixed(2));
         statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
+        var tmpCount = 0;
+        for (let i = 0; i < statsObject.years.length - 1; i++) {
+            tmpCount += statsObject.years[i].postCount;
+        }
+        statsObject.avgPostsPerYear = parseFloat((tmpCount / (statsObject.years.length - 1)).toFixed(2));
         log.info(`Completed post stats generation`);
         console.timeEnd(durationStr);
         if (debugMode) {

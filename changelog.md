@@ -1,5 +1,9 @@
 # Changelog
 
+## 20240107 0.2.4
+
+Removed current year from site average posts per year. No sense counting the current year since it skews the number early in the year.
+
 ## 20231223 0.2.3
 
 Added support for [cli-logger](https://www.npmjs.com/package/cli-logger) to make it easier to format console output.
