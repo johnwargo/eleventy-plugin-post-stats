@@ -31,8 +31,13 @@ type StatsObject = {
   years: YearStats[],
 }
 
+type MonthStats = {
+  postCount: number
+}
+
 type YearStats = {
   year: number,
+  months?: MonthStats[],
   avgDays: number,
   avgCharacterCount: number,
   avgCodeBlockCount: number,
