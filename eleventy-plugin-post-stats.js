@@ -17,6 +17,9 @@ var log = (0, cli_logger_1.default)(conf);
 function byDate(a, b) {
     return a.date - b.date;
 }
+function getMonthName(theDate) {
+    return theDate.toLocaleString('default', { month: 'long' });
+}
 function countCodeBlocks(content) {
     const regex = /```(.*?)```/gis;
     const matches = content.match(regex);
@@ -38,7 +41,6 @@ function processPostFile(filePath, debugMode) {
         content = content.replace(/(```.+?```)/gms, '');
         let stats = (0, writing_stats_1.default)(content);
         if (debugMode) {
-            console.dir(stats);
             log.info();
         }
         return {
@@ -61,6 +63,7 @@ function processPostFile(filePath, debugMode) {
 module.exports = function (eleventyConfig, options = {}) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
         var avgDays = 0;
+        var monthPostCount = 0;
         var totalDays = 0;
         var totalPostCount = 0;
         var totalCharacterCount = 0;
@@ -106,17 +109,28 @@ module.exports = function (eleventyConfig, options = {}) {
         statsObject.firstPostDate = posts[0].data.page.date;
         statsObject.lastPostDate = posts[postCount - 1].data.page.date;
         var prevPostDate = posts[0].data.page.date;
+        var currentMonth = prevPostDate.getMonth();
         var currentYear = prevPostDate.getFullYear();
-        log.info(`Generating statistics for ${postCount} articles`);
-        log.info(`Processing articles for ${currentYear}`);
+        var months = [];
+        log.info(`Generating statistics for ${postCount} articles total`);
+        log.info(`${getMonthName(prevPostDate)}, ${currentYear}`);
         console.time(durationStr);
         for (let post of posts) {
             let postDate = post.data.page.date;
-            let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
+            let thisMonth = postDate.getMonth();
             let thisYear = postDate.getFullYear();
-            if (thisYear != currentYear) {
+            if (thisMonth != currentMonth) {
                 if (debugMode)
-                    log.info(`Processing articles for ${thisYear}`);
+                    console.dir(months);
+                log.info(`${getMonthName(postDate)}, ${thisYear}`);
+                let tmpDate = new Date(postDate);
+                tmpDate.setMonth(tmpDate.getMonth() - 1);
+                months.push({ month: getMonthName(tmpDate), postCount: monthPostCount });
+                monthPostCount = 0;
+                currentMonth = thisMonth;
+            }
+            if (thisYear != currentYear) {
+                console.dir(months);
                 avgDays = yearPostDays / yearPostCount;
                 let yearStats = {
                     year: currentYear,
@@ -125,7 +139,8 @@ module.exports = function (eleventyConfig, options = {}) {
                     avgCharacterCount: parseFloat((yearCharacterCount / yearPostCount).toFixed(2)),
                     avgCodeBlockCount: parseFloat((yearCodeBlockCount / yearPostCount).toFixed(2)),
                     avgParagraphCount: parseFloat((yearParagraphCount / yearPostCount).toFixed(2)),
-                    avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2))
+                    avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2)),
+                    months: months
                 };
                 statsObject.years.push(yearStats);
                 yearCharacterCount = 0;
@@ -135,10 +150,13 @@ module.exports = function (eleventyConfig, options = {}) {
                 yearPostCount = 0;
                 yearPostDays = 0;
                 currentYear = thisYear;
+                months = [];
             }
+            let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
             prevPostDate = postDate;
             totalDays += daysBetween;
             yearPostDays += daysBetween;
+            monthPostCount++;
             totalPostCount++;
             yearPostCount++;
             const postStats = processPostFile(post.page.inputPath, debugMode);

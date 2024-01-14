@@ -32,6 +32,7 @@ type StatsObject = {
 }
 
 type MonthStats = {
+  month: String,
   postCount: number
 }
 
@@ -66,6 +67,11 @@ function byDate(a: any, b: any) {
   return a.date - b.date;
 }
 
+function getMonthName(theDate: Date): string {
+  //@ts-ignore
+  return theDate.toLocaleString('default', { month: 'long' });
+}
+
 function countCodeBlocks(content: string): number {
   const regex = /```(.*?)```/gis;
   const matches = content.match(regex);
@@ -93,7 +99,7 @@ function processPostFile(filePath: string, debugMode: boolean): ContentStats {
     // get the rest of the article stats
     let stats = writingStats(content);
     if (debugMode) {
-      console.dir(stats);
+      // console.dir(stats);
       log.info();
     }
     return {
@@ -114,9 +120,11 @@ function processPostFile(filePath: string, debugMode: boolean): ContentStats {
 }
 
 module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
+
   eleventyConfig.addCollection('postStats', (collectionApi: any) => {
 
     var avgDays = 0;
+    var monthPostCount = 0;
     var totalDays = 0;
     var totalPostCount = 0;
     var totalCharacterCount = 0;
@@ -174,20 +182,35 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     statsObject.postCount = postCount;
     statsObject.firstPostDate = posts[0].data.page.date;
     statsObject.lastPostDate = posts[postCount - 1].data.page.date;
-    var prevPostDate = posts[0].data.page.date;
-    var currentYear = prevPostDate.getFullYear();
 
-    log.info(`Generating statistics for ${postCount} articles`);
-    log.info(`Processing articles for ${currentYear}`);
+    var prevPostDate = posts[0].data.page.date;
+    var currentMonth: number = prevPostDate.getMonth();
+    var currentYear = prevPostDate.getFullYear();
+    var months: MonthStats[] = [];
+
+    log.info(`Generating statistics for ${postCount} articles total`);
+    log.info(`${getMonthName(prevPostDate)}, ${currentYear}`);
     console.time(durationStr);
 
     for (let post of posts) {
+      // get the date from the current post
       let postDate = post.data.page.date;
-      let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
-      // Did we change year?
+      let thisMonth: number = postDate.getMonth();
       let thisYear = postDate.getFullYear();
+
+      // Did we change month?      
+      if (thisMonth != currentMonth) {
+        log.debug(`${getMonthName(postDate)}, ${thisYear}`);
+        let tmpDate = new Date(postDate);
+        tmpDate.setMonth(tmpDate.getMonth() - 1);
+        months.push({ month: getMonthName(tmpDate), postCount: monthPostCount });
+        monthPostCount = 0;
+        currentMonth = thisMonth;
+      }
+
+      // Did we change year?      
       if (thisYear != currentYear) {
-        if (debugMode) log.info(`Processing articles for ${thisYear}`);
+        console.dir(months);
         // calculate the average days between posts
         avgDays = yearPostDays / yearPostCount;
         // Add our year stats to the object
@@ -198,9 +221,11 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
           avgCharacterCount: parseFloat((yearCharacterCount / yearPostCount).toFixed(2)),
           avgCodeBlockCount: parseFloat((yearCodeBlockCount / yearPostCount).toFixed(2)),
           avgParagraphCount: parseFloat((yearParagraphCount / yearPostCount).toFixed(2)),
-          avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2))
+          avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2)),
+          months: months
         };
         statsObject.years.push(yearStats);
+
         // reset the year article counts
         yearCharacterCount = 0;
         yearCodeBlockCount = 0;
@@ -209,13 +234,17 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
         yearPostCount = 0;
         yearPostDays = 0;
         currentYear = thisYear;
+        months = [];
       }
+
+      let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
 
       // update our stats
       prevPostDate = postDate;
       totalDays += daysBetween;
       yearPostDays += daysBetween;
       //update post counts
+      monthPostCount++;
       totalPostCount++;
       yearPostCount++;
 
@@ -264,7 +293,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     var tmpCount = 0;
     for (let i = 0; i < statsObject.years.length - 1; i++) {
       tmpCount += statsObject.years[i].postCount;
-    }    
+    }
     statsObject.avgPostsPerYear = parseFloat((tmpCount / (statsObject.years.length - 1)).toFixed(2));
 
     log.info(`Completed post stats generation`);
