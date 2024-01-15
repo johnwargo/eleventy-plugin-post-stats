@@ -1,8 +1,10 @@
 # Eleventy Plugin Post Statistics
 
 
-<!-- TODO: to see an example skipping the last year, look at https://github.com/johnwargo/johnwargo-static-11ty/blob/bd21cc48b2998cfa9e10114c0f93bb582304aada/src/statistics.liquid#L7 -->
-<!-- //TODO: add months data to the examples -->
+TODO: to see an example skipping the last year, look at https://github.com/johnwargo/johnwargo-static-11ty/blob/bd21cc48b2998cfa9e10114c0f93bb582304aada/src/statistics.liquid#L7
+TODO: add months data to the examples
+TODO:  ignores last year in stats, since year is in progress. Update the code if the site doesn't have stats for the current year.
+
 
 
 This is an Eleventy plugin that generates a site posts statistics collection you can use in [Eleventy](https://www.11ty.dev/) sites to display stats for your site. Here is an example from [johnwargo.com](https://johnwargo.com/statistics/).
