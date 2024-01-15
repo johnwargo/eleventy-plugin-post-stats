@@ -212,7 +212,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
       if (thisMonth != currentMonth) {
         // month array is filled by now, so no gaps (v0.2.6)
         log.debug(`${getMonthName(postDate)}, ${thisYear}`);
-        // populate the month's entry with the post count        
+        // populate the month's entry with the post count
         months[currentMonth].postCount = monthPostCount;
         // reset the post count for the next month
         monthPostCount = 0;
@@ -280,9 +280,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     // ================================================================
     if (yearPostCount > 0) {
       // add the last months array to the year stats
-      let tmpDate = new Date(prevPostDate);
-      tmpDate.setMonth(tmpDate.getMonth() - 1);
-      months.push({ month: getMonthName(prevPostDate), postCount: monthPostCount });
+      months[currentMonth].postCount = monthPostCount;     
 
       // calculate the average days between posts
       avgDays = yearPostDays / yearPostCount;
