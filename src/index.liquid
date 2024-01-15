@@ -8,10 +8,7 @@ title: Eleventy Plugin Post Stats Example
 
 <p>Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.</p>
 
-{% if collections.postStats.postCount > 0 %}
-{% assign yearsMinusOne = collections.postStats.years.length | minus: 1  %}  
-{% assign avgPostsPerYearYears = collections.postStats.years| slice: 0, yearsMinusOne %}
-  
+{% if collections.postStats.postCount > 0 %} 
   <h2>Global Statistics</h2>
   <p>Biltong drumstick pork loin ham. Beef ribs t-bone drumstick andouille ham. Ham hock ball tip spare ribs landjaeger, meatloaf chislic boudin corned beef tenderloin cupim. Shankle shank ball tip meatloaf ham. Meatloaf pork chop short loin frankfurter tongue rump jowl burgdoggen. Kevin ham tongue, frankfurter hamburger filet mignon fatback meatball jowl pork chop drumstick pork loin buffalo. Doner cow tongue, turkey buffalo beef cupim biltong bresaola drumstick.</p>
   <ul>
@@ -153,7 +150,7 @@ title: Eleventy Plugin Post Stats Example
         type: 'line',
         name: 'Site Average Posts/Year',
         // Doesn't include the last year (because it's not complete)
-        data: [{% for year in avgPostsPerYearYears %}{{ collections.postStats.avgPostsPerYear | commaize }}{%- unless forloop.last -%}, {% endunless %}{% endfor %}] 
+        data: [{% for year in collections.postStats.years %}{{ collections.postStats.avgPostsPerYear | commaize }}{%- unless forloop.last -%}, {% endunless %}{% endfor %}] 
       }
     ],
     dataLabels: { enabled: true, enabledOnSeries: [0, 1] },

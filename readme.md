@@ -1,5 +1,10 @@
 # Eleventy Plugin Post Statistics
 
+
+<!-- TODO: to see an example skipping the last year, look at https://github.com/johnwargo/johnwargo-static-11ty/blob/bd21cc48b2998cfa9e10114c0f93bb582304aada/src/statistics.liquid#L7 -->
+<!-- //TODO: add months data to the examples -->
+
+
 This is an Eleventy plugin that generates a site posts statistics collection you can use in [Eleventy](https://www.11ty.dev/) sites to display stats for your site. Here is an example from [johnwargo.com](https://johnwargo.com/statistics/).
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/115f4c2d-998f-4010-a1cf-ca0c3973b4d5/deploy-status)](https://app.netlify.com/sites/eleventy-plugin-post-stats/deploys)
