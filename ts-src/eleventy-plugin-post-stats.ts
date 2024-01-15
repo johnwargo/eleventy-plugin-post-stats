@@ -209,8 +209,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
       }
 
       // Did we change year?      
-      if (thisYear != currentYear) {
-        console.dir(months);
+      if (thisYear != currentYear) {        
         // calculate the average days between posts
         avgDays = yearPostDays / yearPostCount;
         // Add our year stats to the object

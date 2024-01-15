@@ -87,22 +87,30 @@ title: Eleventy Plugin Post Stats Example
       </tbody>
     </table>
 
+    <h2>Monthly Posts</h2>
+    <p>Pork loin kielbasa picanha, pork sausage hamburger short ribs frankfurter bresaola. Kielbasa cupim pork belly, strip steak flank alcatra spare ribs. Leberkas picanha strip steak biltong. Spare ribs capicola pork sausage flank cow bresaola</p>
+    <div id="heatmap"></div>
+
     <h2>Post Statistics</h2>
-    <p>Tongue pig kielbasa boudin chislic salami. Meatball rump venison bacon. Alcatra biltong leberkas, ground round andouille burgdoggen bresaola filet mignon shank. Porchetta shankle ribeye brisket turducken beef tenderloin, meatball short loin corned beef andouille t-bone chuck landjaeger bacon.</p>
+    <p>Pork tongue corned beef ham, boudin pork belly sausage bacon prosciutto. Sirloin short loin landjaeger andouille picanha pig hamburger meatball corned beef swine. Ground round capicola turkey, rump meatball salami pastrami doner. Corned beef beef drumstick, pancetta ham brisket ball tip.</p>
     <div class="chart-container">
       <canvas id="statsChart1"></canvas>
     </div>
+
     <h2>Content Statistics (Part 1)</h2>
     <p>Cupim hamburger kielbasa short loin spare ribs drumstick. Brisket ham hock swine, leberkas venison frankfurter bresaola meatloaf capicola pig andouille spare ribs chicken. Ball tip salami ham, pork meatloaf shank porchetta. Chicken venison biltong t-bone shoulder. Tenderloin porchetta drumstick, prosciutto ribeye hamburger shank.</p>
     <div class="chart-container">
       <canvas id="statsChart2"></canvas>
     </div>
+
     <h2>Content Statistics (Part 2)</h2>
     <p>Bacon ipsum dolor amet alcatra meatloaf shoulder, sausage strip steak flank bresaola. Kielbasa biltong salami, prosciutto meatball shoulder bacon fatback drumstick beef ribs ribeye. Meatball bresaola andouille sausage, pig tail pork chop shank. Jerky pork frankfurter pig meatball chislic.</p>
     <div class="chart-container">
       <canvas id="statsChart3"></canvas>
     </div>
 
+    <hr />
+    <p>Bacon Ipsum test by <a href="https://baconipsum.com/" target="_blank">Bacon Ipsum</a>.</p>
   {% else %}
     <p>
       <strong>No data to display</strong>
@@ -122,6 +130,20 @@ title: Eleventy Plugin Post Stats Example
 </main>
 
 <!-- Chart Scripts -->
+
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<script>
+  // Posts per month heatmap
+  var options = {
+    series: [{% for year in collections.postStats.years %}
+      {name: {{ year.year }}, data: [{%- for month in year.months -%}{{ month.postCount }}{% unless forloop.last %}, {% endunless %}{%- endfor -%}]}{% unless forloop.last %},{% endunless %}{% endfor %}],
+    title: {text: 'Posts Per Month'},
+    dataLabels: {enabled: false},
+    colors: ["#008FFB"],
+  };
+  var chart = new ApexCharts(document.querySelector("#heatmap"), options);
+  chart.render();
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>

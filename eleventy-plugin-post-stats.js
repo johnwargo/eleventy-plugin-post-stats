@@ -120,9 +120,7 @@ module.exports = function (eleventyConfig, options = {}) {
             let thisMonth = postDate.getMonth();
             let thisYear = postDate.getFullYear();
             if (thisMonth != currentMonth) {
-                if (debugMode)
-                    console.dir(months);
-                log.info(`${getMonthName(postDate)}, ${thisYear}`);
+                log.debug(`${getMonthName(postDate)}, ${thisYear}`);
                 let tmpDate = new Date(postDate);
                 tmpDate.setMonth(tmpDate.getMonth() - 1);
                 months.push({ month: getMonthName(tmpDate), postCount: monthPostCount });
@@ -130,7 +128,6 @@ module.exports = function (eleventyConfig, options = {}) {
                 currentMonth = thisMonth;
             }
             if (thisYear != currentYear) {
-                console.dir(months);
                 avgDays = yearPostDays / yearPostCount;
                 let yearStats = {
                     year: currentYear,
