@@ -188,11 +188,17 @@ module.exports = function (eleventyConfig, options = {}) {
         statsObject.avgCodeBlockCount = parseFloat((totalCodeBlockCount / totalPostCount).toFixed(2));
         statsObject.avgParagraphCount = parseFloat((totalParagraphCount / totalPostCount).toFixed(2));
         statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
+        var loopLimit = statsObject.years.length;
+        var thisYear = new Date().getFullYear();
         var tmpCount = 0;
-        for (let i = 0; i < statsObject.years.length - 1; i++) {
+        if (currentYear == thisYear)
+            loopLimit--;
+        log.info(`thisYear: ${thisYear}, currentYear: ${currentYear}`);
+        log.info(`loopLimit: ${loopLimit}`);
+        for (let i = 0; i < loopLimit; i++) {
             tmpCount += statsObject.years[i].postCount;
         }
-        statsObject.avgPostsPerYear = parseFloat((tmpCount / (statsObject.years.length - 1)).toFixed(2));
+        statsObject.avgPostsPerYear = parseFloat((tmpCount / loopLimit).toFixed(2));
         log.info(`Completed post stats generation`);
         console.timeEnd(durationStr);
         if (debugMode) {

@@ -26,7 +26,7 @@ title: Eleventy Plugin Post Stats Example
     </li>
     <li>
       <strong>Average posts per year:</strong>
-      {{ collections.postStats.avgPostsPerYear | commaize }} (excludes current year)
+      {{ collections.postStats.avgPostsPerYear | commaize }} (may exclude current year depending on year of last post)
     </li>     
     <li>
       <strong>Average days between posts:</strong>
@@ -191,14 +191,14 @@ title: Eleventy Plugin Post Stats Example
   var options3 = {
     chart: { type: 'line' },
     title: { text: 'Content Stats (Part 2)' },
-    series: [
+    series: [ 
       {
         type: 'column',
         name: 'Avg. Paragraphs per Post',
         data: [{% for year in collections.postStats.years %}{{ year.avgParagraphCount }}{%- unless forloop.last -%}, {% endunless %}{% endfor %}] 
       }, {
-    type: 'line',
-      name: 'Avg. Code Blocks per Post',
+        type: 'line',
+        name: 'Avg. Code Blocks per Post',
         data: [{% for year in collections.postStats.years %}{{ year.avgCodeBlockCount }}{%- unless forloop.last -%}, {% endunless %}{% endfor %}] 
       }      
     ],

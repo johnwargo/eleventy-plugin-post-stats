@@ -294,12 +294,17 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     statsObject.avgParagraphCount = parseFloat((totalParagraphCount / totalPostCount).toFixed(2));
     statsObject.avgWordCount = parseFloat((totalWordCount / totalPostCount).toFixed(2));
 
-    // now, for average posts per year, ignore the current year. (v0.2.4)
+    // (v0.2.4) - for average posts per year, ignore the current (last) year. 
+    // (v0.2.5) - updated so that if the current year is the same as the last post year, skip the last year
+    // you know, because you can always publish another post this year
+    var loopLimit = statsObject.years.length;
+    var thisYear = new Date().getFullYear();
     var tmpCount = 0;
-    for (let i = 0; i < statsObject.years.length - 1; i++) {
+    if (currentYear == thisYear) loopLimit--;
+    for (let i = 0; i < loopLimit; i++) {
       tmpCount += statsObject.years[i].postCount;
     }
-    statsObject.avgPostsPerYear = parseFloat((tmpCount / (statsObject.years.length - 1)).toFixed(2));
+    statsObject.avgPostsPerYear = parseFloat((tmpCount / loopLimit).toFixed(2));
 
     log.info(`Completed post stats generation`);
     console.timeEnd(durationStr);

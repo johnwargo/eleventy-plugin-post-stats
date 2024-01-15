@@ -4,7 +4,7 @@
 
 Multiple updates: 
 
-* Fixed logic issue with site average posts adjusting the logic when the site has no posts in the year the site's being built.
+* Fixed logic issue with site average posts adjusting the logic when the site has no posts in the year the site's being built. When I added the feature, I made a logic error in assuming that there would always be posts in the current year, but that may not be true with sites that are active and built periodically, but don't have posts for the current year. In this version I check for that condition and act accordingly (including the current year if the final post date is not in the current year).
 * Added months array to the Year object and updated the plugin to place posts per month into the array. This is a non-breaking change as it's just an additional property added to the generated stats object.
 * Added posts per month heatmap to the Home page (`index.liquid` file) to show off the new monthly posts data.
 * Updated all of the other charts on the Home page to use [Apex Charts](https://apexcharts.com/); moved the [charts.js](https://www.chartjs.org/)-based charts to a separate page called Alternate.

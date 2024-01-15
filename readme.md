@@ -1,19 +1,12 @@
 # Eleventy Plugin Post Statistics
 
-
-TODO: to see an example skipping the last year, look at https://github.com/johnwargo/johnwargo-static-11ty/blob/bd21cc48b2998cfa9e10114c0f93bb582304aada/src/statistics.liquid#L7
-TODO: add months data to the examples
-TODO:  ignores last year in stats, since year is in progress. Update the code if the site doesn't have stats for the current year.
-
-
-
-This is an Eleventy plugin that generates a site posts statistics collection you can use in [Eleventy](https://www.11ty.dev/) sites to display stats for your site. Here is an example from [johnwargo.com](https://johnwargo.com/statistics/).
+An Eleventy plugin that generates a site posts statistics collection you can use in [Eleventy](https://www.11ty.dev/) sites to display stats for your site. Here is an example from [johnwargo.com](https://johnwargo.com/statistics/).
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/115f4c2d-998f-4010-a1cf-ca0c3973b4d5/deploy-status)](https://app.netlify.com/sites/eleventy-plugin-post-stats/deploys)
 
 The repository includes a complete Eleventy project you can serve to see the plugin in action; [see it now](https://eleventy-plugin-post-stats.netlify.app/).
 
-**Note:** The plugin assumes your post files are in markdown format and tagged with `post`.
+**Note:** The plugin assumes your post files are in markdown format and tagged with `post`. You can configure the plugin to process documents assigned to other tags.
 
 ## Installation
 
@@ -40,7 +33,7 @@ module.exports = eleventyConfig => {
 }
 ```
 
-The complete file should look something lie the following (but with your site's other stuff in it too):
+The complete file should look something like the following (but with your site's other stuff in it too):
 
 ```js
 const postStats = require('./eleventy-plugin-post-stats.js');
@@ -58,13 +51,13 @@ By default, the plugin processes all posts tagged with a `tag` of `post`. If you
 
 **Note:** The plugin assumes each article is tagged with a single tag. If your site has multiple tags assigned to an article, it will get counted more that once in the stats: once for each tag value.
 
-For example, to calculate statistics for all articles tagges with `news`, add the plugin to your project using the following:
+For example, to calculate statistics for all articles tagged with `news`, add the plugin to your project using the following:
 
 ```js
 eleventyConfig.addPlugin(postStats, { tags: ['news'] });
 ```
 
-If you want to process both posts and news items, add the plugin to your project passing in an array listing the tags:
+If you want to process both `posts` and `news` items, add the plugin to your project passing in an array listing the tags:
 
 ```js
 eleventyConfig.addPlugin(postStats, { tags: ['post', 'news'] });
@@ -96,6 +89,8 @@ eleventyConfig.addPlugin(postStats, { debugMode: true, tag: ['post', 'news'] });
 
 When the plugin executes during an Eleventy site build, loops through all of your site's posts and builds the following collection:
 
+**Note:** The `months` data shown in the example was manually edited, the data does not accurately reflect the actual post counts for the year. It is just made data up to demonstrate the data structure.
+
 ```json
 {
   "avgDays": 11.17,
@@ -115,7 +110,21 @@ When the plugin executes during an Eleventy site build, loops through all of you
       "avgCharacterCount": 2045.42,
       "avgCodeBlockCount": 0,
       "avgParagraphCount": 3.24,
-      "avgWordCount": 369.06
+      "avgWordCount": 369.06,
+      "months": [
+        { "month": "January", "postCount": 2 },
+        { "month": "February", "postCount": 5 },
+        { "month": "March", "postCount": 2 },
+        { "month": "April", "postCount": 2 },
+        { "month": "May", "postCount": 2 },
+        { "month": "June", "postCount": 2 },
+        { "month": "July", "postCount": 2 },
+        { "month": "August", "postCount": 3 },
+        { "month": "September", "postCount": 2 },
+        { "month": "October", "postCount": 4 },
+        { "month": "November", "postCount": 2 },
+        { "month": "December", "postCount": 5 }
+      ]
     },
     {
       "year": 2022,
@@ -124,7 +133,21 @@ When the plugin executes during an Eleventy site build, loops through all of you
       "avgCharacterCount": 2015.14,
       "avgCodeBlockCount": 0,
       "avgParagraphCount": 3.28,
-      "avgWordCount": 361.59
+      "avgWordCount": 361.59,
+      "months": [
+        { "month": "January", "postCount": 8 },
+        { "month": "February", "postCount": 3 },
+        { "month": "March", "postCount": 1 },
+        { "month": "April", "postCount": 3 },
+        { "month": "May", "postCount": 5 },
+        { "month": "June", "postCount": 5 },
+        { "month": "July", "postCount": 6 },
+        { "month": "August", "postCount": 2 },
+        { "month": "September", "postCount": 2 },
+        { "month": "October", "postCount": 4 },
+        { "month": "November", "postCount": 2 },
+        { "month": "December", "postCount": 5 }
+      ]
     },
     {
       "year": 2023,
@@ -133,13 +156,27 @@ When the plugin executes during an Eleventy site build, loops through all of you
       "avgCharacterCount": 1949.47,
       "avgCodeBlockCount": 0,
       "avgParagraphCount": 3.13,
-      "avgWordCount": 352.95
+      "avgWordCount": 352.95,
+      "months": [
+        { "month": "January", "postCount": 6 },
+        { "month": "February", "postCount": 0 },
+        { "month": "March", "postCount": 1 },
+        { "month": "April", "postCount": 3 },
+        { "month": "May", "postCount": 2 },
+        { "month": "June", "postCount": 2 },
+        { "month": "July", "postCount": 5 },
+        { "month": "August", "postCount": 7 },
+        { "month": "September", "postCount": 2 },
+        { "month": "October", "postCount": 2 },
+        { "month": "November", "postCount": 2 },
+        { "month": "December", "postCount": 5 }
+      ]
     }
   ]
 }
 ```
 
-At the root level are the following properties:
+At the root level are the following site-wide properties:
 
 * `avgDays`: The average number of days between posts for the entire site.
 * `avgCharacterCount`: The average number of post characters per post for the entire site.
@@ -150,7 +187,7 @@ At the root level are the following properties:
 * `postCount`: The total number of posts in the site
 * `firstPostDate`: The timestamp for the first post published
 * `lastPostDate`: The timestamp for the most recent post
-* `Years` array: An array of statistics (postCount and average number of days between posts) for each year's posts.
+* `Years` array: An array of statistics (postCount and average number of days between posts) for each year's posts shown in the example above.
 
 Here's an example in Liquid for rendering those values in an Eleventy site:
 
@@ -200,7 +237,8 @@ The `years` array contains many of those same properties, scoped to all posts fo
 * `avgCodeBlockCount`: The average number of code blocks per post for the selected year.
 * `avgParagraphCount`: The average number of paragraphs per post for the selected year.
 * `avgWordCount`" The average number of words per post for the selected year.
-* `postCount`: The total number of posts in the site
+* `postCount`: The total number of posts in the site for the year
+* `months`: An array of posts per month statistics for the selected year, each array element (in month order) stores both the month name and monthly post count: `( month: 'January', postCount: 23)`.
 
 Using that data, you can create a page in your site similar to the following (with better style and formatting, of course):
 
@@ -210,11 +248,15 @@ Refer to this project's [index.liquid](https://github.com/johnwargo/eleventy-plu
 
 ## Launching the Test Site
 
-To view hte sample statistics page, make a local clone of the repo then:
+To view the sample statistics page, make a local clone of the repo then:
 
 1. Open a terminal window or command prompt and execute the following command: `npm install`
-2. Start the `serve` process by executing `npm start`
+2. Start Eleventy's `serve` process by executing `npm start`
 3. Click the link to launch the site in the browser.
+
+Early versions of this plugin (up to version 0.2.4) used [Charts.js](https://www.chartjs.org/) to generate the graphs on the sample site's home page. Starting with version 0.2.5, I converted the sample site's Home page to use [Apex Charts](https://apexcharts.com/) since I liked the style and capabilities of the charts plus the library supports heat maps which is something I wanted to add since this plugin now has posts per month capabilities. 
+
+I kept the old page around, you can access it using the menu at the top of the sample site, so you have two examples to use to learn how to use this plugin in your site.
 
 ## Notes
 
