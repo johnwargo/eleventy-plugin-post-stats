@@ -3,6 +3,7 @@
 ## 20240115 v0.2.6
 
 * Added code to fill in missing months in the monthly count data, a logic error on my part. To fix this, the plugin pre-populates the `months` array before processing posts.
+* Added a calculation for heatmap chart height based on the number of years displayed.
 
 ## 20240115 v0.2.5
 

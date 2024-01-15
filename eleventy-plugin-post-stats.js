@@ -126,7 +126,6 @@ module.exports = function (eleventyConfig, options = {}) {
         console.time(durationStr);
         for (let post of posts) {
             let postDate = post.data.page.date;
-            log.info(`Post Date: ${postDate}`);
             let thisMonth = postDate.getMonth();
             let thisYear = postDate.getFullYear();
             if (thisMonth != currentMonth) {
@@ -136,7 +135,6 @@ module.exports = function (eleventyConfig, options = {}) {
                 currentMonth = thisMonth;
             }
             if (thisYear != currentYear) {
-                console.dir(months);
                 avgDays = yearPostDays / yearPostCount;
                 let yearStats = {
                     year: currentYear,
