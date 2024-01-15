@@ -20,6 +20,15 @@ function byDate(a, b) {
 function getMonthName(theDate) {
     return theDate.toLocaleString('default', { month: 'long' });
 }
+function fillMonthArray() {
+    var months = [];
+    var tmpDate = new Date();
+    for (let i = 0; i < 12; i++) {
+        tmpDate.setMonth(i);
+        months.push({ month: getMonthName(tmpDate), postCount: 0 });
+    }
+    return months;
+}
 function countCodeBlocks(content) {
     const regex = /```(.*?)```/gis;
     const matches = content.match(regex);
@@ -111,23 +120,23 @@ module.exports = function (eleventyConfig, options = {}) {
         var prevPostDate = posts[0].data.page.date;
         var currentMonth = prevPostDate.getMonth();
         var currentYear = prevPostDate.getFullYear();
-        var months = [];
+        var months = fillMonthArray();
         log.info(`Generating statistics for ${postCount} articles total`);
         log.info(`${getMonthName(prevPostDate)}, ${currentYear}`);
         console.time(durationStr);
         for (let post of posts) {
             let postDate = post.data.page.date;
+            log.info(`Post Date: ${postDate}`);
             let thisMonth = postDate.getMonth();
             let thisYear = postDate.getFullYear();
             if (thisMonth != currentMonth) {
                 log.debug(`${getMonthName(postDate)}, ${thisYear}`);
-                let tmpDate = new Date(postDate);
-                tmpDate.setMonth(tmpDate.getMonth() - 1);
-                months.push({ month: getMonthName(tmpDate), postCount: monthPostCount });
+                months[currentMonth].postCount = monthPostCount;
                 monthPostCount = 0;
                 currentMonth = thisMonth;
             }
             if (thisYear != currentYear) {
+                console.dir(months);
                 avgDays = yearPostDays / yearPostCount;
                 let yearStats = {
                     year: currentYear,
@@ -147,7 +156,7 @@ module.exports = function (eleventyConfig, options = {}) {
                 yearPostCount = 0;
                 yearPostDays = 0;
                 currentYear = thisYear;
-                months = [];
+                months = fillMonthArray();
             }
             let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
             prevPostDate = postDate;
@@ -193,8 +202,6 @@ module.exports = function (eleventyConfig, options = {}) {
         var tmpCount = 0;
         if (currentYear == thisYear)
             loopLimit--;
-        log.info(`thisYear: ${thisYear}, currentYear: ${currentYear}`);
-        log.info(`loopLimit: ${loopLimit}`);
         for (let i = 0; i < loopLimit; i++) {
             tmpCount += statsObject.years[i].postCount;
         }

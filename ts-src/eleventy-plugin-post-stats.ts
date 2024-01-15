@@ -72,6 +72,16 @@ function getMonthName(theDate: Date): string {
   return theDate.toLocaleString('default', { month: 'long' });
 }
 
+function fillMonthArray() {
+  var months: MonthStats[] = [];
+  var tmpDate = new Date();
+  for (let i = 0; i < 12; i++) {
+    tmpDate.setMonth(i);
+    months.push({ month: getMonthName(tmpDate), postCount: 0 });
+  }
+  return months;
+}
+
 function countCodeBlocks(content: string): number {
   const regex = /```(.*?)```/gis;
   const matches = content.match(regex);
@@ -186,7 +196,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     var prevPostDate = posts[0].data.page.date;
     var currentMonth: number = prevPostDate.getMonth();
     var currentYear = prevPostDate.getFullYear();
-    var months: MonthStats[] = [];
+    var months: MonthStats[] = fillMonthArray();
 
     log.info(`Generating statistics for ${postCount} articles total`);
     log.info(`${getMonthName(prevPostDate)}, ${currentYear}`);
@@ -200,10 +210,11 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
       // Did we change month?      
       if (thisMonth != currentMonth) {
+        // month array is filled by now, so no gaps (v0.2.6)
         log.debug(`${getMonthName(postDate)}, ${thisYear}`);
-        let tmpDate = new Date(postDate);
-        tmpDate.setMonth(tmpDate.getMonth() - 1);
-        months.push({ month: getMonthName(tmpDate), postCount: monthPostCount });
+        // populate the month's entry with the post count        
+        months[currentMonth].postCount = monthPostCount;
+        // reset the post count for the next month
         monthPostCount = 0;
         currentMonth = thisMonth;
       }
@@ -233,7 +244,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
         yearPostCount = 0;
         yearPostDays = 0;
         currentYear = thisYear;
-        months = [];
+        months = fillMonthArray();
       }
 
       let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
