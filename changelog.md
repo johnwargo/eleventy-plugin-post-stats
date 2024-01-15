@@ -11,15 +11,15 @@ Multiple updates:
 
 ## 20240107 0.2.4
 
-Removed current year from site average posts per year. No sense counting the current year since it skews the number early in the year.
+* Removed current year from site average posts per year. No sense counting the current year since it skews the number early in the year.
 
 ## 20231223 0.2.3
 
-Added support for [cli-logger](https://www.npmjs.com/package/cli-logger) to make it easier to format console output.
+* Added support for [cli-logger](https://www.npmjs.com/package/cli-logger) to make it easier to format console output.
 
 ## 20231219 0.2.2
 
-Added average posts per year property.
+* Added average posts per year property.
 
 ## 20230719 0.2.0
 
@@ -29,7 +29,7 @@ Right now it only supports articles with a single tag although you can generate 
 
 ## 20230717 0.1.6
 
-Modified options to allow using something other than `post` to build the collection of items processed. You can set the tag when you add the plugin to the Eleventy project.
+* Modified options to allow using something other than `post` to build the collection of items processed. You can set the tag when you add the plugin to the Eleventy project.
 
 ## 20230716 0.1.5
 
@@ -38,17 +38,18 @@ Modified options to allow using something other than `post` to build the collect
 
 ## 20230715 0.1.3
 
-Added post statistics: character count, word count, paragraph count, and code block count
+* Added post statistics: character count, word count, paragraph count, and code block count
 
 ## 20230707
 
-Breaking change, `count` changed to `postCount`
-Converted source to TypeScript
+**Breaking Change** `count` changed to `postCount`
+
+* Also converted source to TypeScript
 
 ## 20230706
 
-Rebuilt the Eleventy project so all site files go into the `src` folder to make the repo cleaner
-Added plugin option `debugMode` in preparation for adding more later.
+* Rebuilt the Eleventy project so all site files go into the `src` folder to make the repo cleaner
+* Added plugin option `debugMode` in preparation for adding more later.
 
 ## 20230516
 
