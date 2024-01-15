@@ -174,9 +174,8 @@ module.exports = function (eleventyConfig, options = {}) {
             yearWordCount += postStats.wordCount;
         }
         if (yearPostCount > 0) {
-            let tmpDate = new Date(prevPostDate);
-            tmpDate.setMonth(tmpDate.getMonth() - 1);
-            months.push({ month: getMonthName(prevPostDate), postCount: monthPostCount });
+            months[prevPostDate.getMonth()].postCount = monthPostCount;
+            console.dir(months);
             avgDays = yearPostDays / yearPostCount;
             let yearStats = {
                 year: currentYear,
