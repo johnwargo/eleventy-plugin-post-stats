@@ -210,7 +210,6 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
       // Did we change year?      
       if (thisYear != currentYear) {
-        console.dir(months);
         // calculate the average days between posts
         avgDays = yearPostDays / yearPostCount;
         // Add our year stats to the object
@@ -272,7 +271,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
       // add the last months array to the year stats
       let tmpDate = new Date(prevPostDate);
       tmpDate.setMonth(tmpDate.getMonth() - 1);
-      months.push({ month: getMonthName(tmpDate), postCount: monthPostCount });
+      months.push({ month: getMonthName(prevPostDate), postCount: monthPostCount });
 
       // calculate the average days between posts
       avgDays = yearPostDays / yearPostCount;
