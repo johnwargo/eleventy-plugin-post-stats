@@ -209,7 +209,8 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
       }
 
       // Did we change year?      
-      if (thisYear != currentYear) {        
+      if (thisYear != currentYear) {
+        console.dir(months);
         // calculate the average days between posts
         avgDays = yearPostDays / yearPostCount;
         // Add our year stats to the object
@@ -268,6 +269,11 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     // sorted by date
     // ================================================================
     if (yearPostCount > 0) {
+      // add the last months array to the year stats
+      let tmpDate = new Date(prevPostDate);
+      tmpDate.setMonth(tmpDate.getMonth() - 1);
+      months.push({ month: getMonthName(tmpDate), postCount: monthPostCount });
+
       // calculate the average days between posts
       avgDays = yearPostDays / yearPostCount;
       // Add our year stats to the object
@@ -278,7 +284,8 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
         avgCharacterCount: parseFloat((yearCharacterCount / yearPostCount).toFixed(2)),
         avgCodeBlockCount: parseFloat((yearCodeBlockCount / yearPostCount).toFixed(2)),
         avgParagraphCount: parseFloat((yearParagraphCount / yearPostCount).toFixed(2)),
-        avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2))
+        avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2)),
+        months: months
       };
       statsObject.years.push(yearStats);
     }

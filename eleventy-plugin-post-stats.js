@@ -128,6 +128,7 @@ module.exports = function (eleventyConfig, options = {}) {
                 currentMonth = thisMonth;
             }
             if (thisYear != currentYear) {
+                console.dir(months);
                 avgDays = yearPostDays / yearPostCount;
                 let yearStats = {
                     year: currentYear,
@@ -167,6 +168,9 @@ module.exports = function (eleventyConfig, options = {}) {
             yearWordCount += postStats.wordCount;
         }
         if (yearPostCount > 0) {
+            let tmpDate = new Date(prevPostDate);
+            tmpDate.setMonth(tmpDate.getMonth() - 1);
+            months.push({ month: getMonthName(tmpDate), postCount: monthPostCount });
             avgDays = yearPostDays / yearPostCount;
             let yearStats = {
                 year: currentYear,
@@ -175,7 +179,8 @@ module.exports = function (eleventyConfig, options = {}) {
                 avgCharacterCount: parseFloat((yearCharacterCount / yearPostCount).toFixed(2)),
                 avgCodeBlockCount: parseFloat((yearCodeBlockCount / yearPostCount).toFixed(2)),
                 avgParagraphCount: parseFloat((yearParagraphCount / yearPostCount).toFixed(2)),
-                avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2))
+                avgWordCount: parseFloat((yearWordCount / yearPostCount).toFixed(2)),
+                months: months
             };
             statsObject.years.push(yearStats);
         }
