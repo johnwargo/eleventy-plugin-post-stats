@@ -4,6 +4,7 @@ title: Eleventy Plugin Post Stats Example
 ---
 
 <h2>Charts.js Version</h2>
+<p>All of the charts rdnered on this page generated using <a href="https://www.chartjs.org/" target="_blank">Charts.js</a></p>
 <p>Bacon ipsum dolor amet venison ribeye drumstick prosciutto, swine alcatra leberkas salami t-bone tri-tip biltong. Picanha tenderloin flank boudin, biltong drumstick strip steak shoulder. Sirloin ham pork chop t-bone, boudin sausage bacon pork loin short loin frankfurter. Tenderloin chislic pork loin, sirloin meatloaf pork chop venison. Prosciutto jerky porchetta capicola shoulder, andouille ground round chislic pig doner.</p>
 
 {% if collections.postStats.postCount > 0 %}
@@ -86,10 +87,6 @@ title: Eleventy Plugin Post Stats Example
     </tbody>
   </table>
 
-  <h2>Posts Heatmap</h2>
-  <p>Pork loin kielbasa picanha, pork sausage hamburger short ribs frankfurter bresaola. Kielbasa cupim pork belly, strip steak flank alcatra spare ribs. Leberkas picanha strip steak biltong. Spare ribs capicola pork sausage flank cow bresaola</p>
-  <div id="heatmap"></div>
-
   <h2>Post Statistics</h2>
   <p>Pork tongue corned beef ham, boudin pork belly sausage bacon prosciutto. Sirloin short loin landjaeger andouille picanha pig hamburger meatball corned beef swine. Ground round capicola turkey, rump meatball salami pastrami doner. Corned beef beef drumstick, pancetta ham brisket ball tip.</p>
   <div class="chart-container">
@@ -114,27 +111,6 @@ title: Eleventy Plugin Post Stats Example
 {% endif %}
 
 <!-- Chart Scripts -->
-
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-<script>
-  // Posts per month heatmap
-  var options = {
-    series: [{% for year in collections.postStats.years %}
-      { name: '{{ year.year }}', 
-        data: [{% for month in year.months %}
-          { x: '{{month.month}}', y: {{ month.postCount }}}{% unless forloop.last %}, {% endunless %}{% endfor %}
-        ]
-      }{% unless forloop.last %},{% endunless %}{% endfor %}
-    ],
-    chart: {height: 350, type: 'heatmap'},
-    title: {text: 'Posts Per Month'},
-    dataLabels: {enabled: true},
-    colors: ["#008FFB"],
-    // plotOptions: {heatmap: {radius: 10}}
-  };
-  var chart0 = new ApexCharts(document.querySelector("#heatmap"), options);
-  chart0.render();
-</script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
