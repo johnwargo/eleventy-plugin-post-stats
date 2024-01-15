@@ -1,0 +1,18 @@
+header, nav{
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+nav{ 
+  margin-bottom: 0px;
+}
+
+main {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+hr {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}

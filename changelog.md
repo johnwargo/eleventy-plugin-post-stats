@@ -1,5 +1,13 @@
 # Changelog
 
+## 20240115 0.2.5
+
+Added months array to the Year object and updated the plugin to place posts per month into the array. This is a non-breaking change as it's just an additional property added to the generated stats object.
+
+Added posts per month heatmap to the Home page (`index.liquid` file) to show off the new monthly posts data.
+
+Updated all of the other charts on the Home page to use [Apex Charts](https://apexcharts.com/); moved the [charts.js](https://www.chartjs.org/)-based charts to a separate page called Alternate.
+
 ## 20240107 0.2.4
 
 Removed current year from site average posts per year. No sense counting the current year since it skews the number early in the year.
