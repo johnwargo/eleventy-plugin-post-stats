@@ -122,7 +122,7 @@ module.exports = function (eleventyConfig, options = {}) {
         var currentYear = prevPostDate.getFullYear();
         var months = fillMonthArray();
         log.info(`Generating statistics for ${postCount} articles total`);
-        log.info(`${getMonthName(prevPostDate)}, ${currentYear}`);
+        log.debug(`${getMonthName(prevPostDate)}, ${currentYear}`);
         console.time(durationStr);
         for (let post of posts) {
             let postDate = post.data.page.date;

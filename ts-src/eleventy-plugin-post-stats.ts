@@ -199,7 +199,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     var months: MonthStats[] = fillMonthArray();
 
     log.info(`Generating statistics for ${postCount} articles total`);
-    log.info(`${getMonthName(prevPostDate)}, ${currentYear}`);
+    log.debug(`${getMonthName(prevPostDate)}, ${currentYear}`);
     console.time(durationStr);
 
     for (let post of posts) {
