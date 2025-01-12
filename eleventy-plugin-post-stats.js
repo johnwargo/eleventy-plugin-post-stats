@@ -103,9 +103,9 @@ module.exports = function (eleventyConfig, options = {}) {
         const tags = options.tags || ['post'];
         var posts = [];
         for (let tag of tags) {
-            log.info(`Getting articles tagged with "${tag}"`);
+            log.info(`Getting articles tagged with the "${tag}" tag`);
             let tagPosts = collectionApi.getFilteredByTag(tag);
-            log.info(`Found ${tagPosts.length} "${tag}" articles`);
+            log.info(`Located ${tagPosts.length} "${tag}" articles`);
             posts.push(...tagPosts);
         }
         const postCount = posts.length;
@@ -117,6 +117,8 @@ module.exports = function (eleventyConfig, options = {}) {
         statsObject.postCount = postCount;
         statsObject.firstPostDate = posts[0].data.page.date;
         statsObject.lastPostDate = posts[postCount - 1].data.page.date;
+        log.debug(`First post date: ${statsObject.firstPostDate}`);
+        log.debug(`Last post date: ${statsObject.lastPostDate}`);
         var prevPostDate = posts[0].data.page.date;
         var currentMonth = prevPostDate.getMonth();
         var currentYear = prevPostDate.getFullYear();
@@ -135,6 +137,7 @@ module.exports = function (eleventyConfig, options = {}) {
                 currentMonth = thisMonth;
             }
             if (thisYear != currentYear) {
+                log.debug(`Year change: ${currentYear} to ${thisYear}`);
                 avgDays = yearPostDays / yearPostCount;
                 let yearStats = {
                     year: currentYear,
@@ -161,8 +164,8 @@ module.exports = function (eleventyConfig, options = {}) {
             totalDays += daysBetween;
             yearPostDays += daysBetween;
             monthPostCount++;
-            totalPostCount++;
             yearPostCount++;
+            totalPostCount++;
             const postStats = processPostFile(post.page.inputPath, debugMode);
             totalCharacterCount += postStats.characterCount;
             yearCharacterCount += postStats.characterCount;

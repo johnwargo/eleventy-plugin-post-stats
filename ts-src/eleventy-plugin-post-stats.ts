@@ -173,9 +173,9 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     // Process each tag separately since getFilteredByTag looks for
     // posts with all of the tags, not just the one we want
     for (let tag of tags) {
-      log.info(`Getting articles tagged with "${tag}"`);
+      log.info(`Getting articles tagged with the "${tag}" tag`);
       let tagPosts = collectionApi.getFilteredByTag(tag);
-      log.info(`Found ${tagPosts.length} "${tag}" articles`);
+      log.info(`Located ${tagPosts.length} "${tag}" articles`);
       posts.push(...tagPosts);
     }
     const postCount = posts.length;
@@ -190,8 +190,11 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     // we have a post count greater than zero, so use it to initialize some 
     // previous placeholder properties
     statsObject.postCount = postCount;
+
     statsObject.firstPostDate = posts[0].data.page.date;
     statsObject.lastPostDate = posts[postCount - 1].data.page.date;
+    log.debug(`First post date: ${statsObject.firstPostDate}`);
+    log.debug(`Last post date: ${statsObject.lastPostDate}`);
 
     var prevPostDate = posts[0].data.page.date;
     var currentMonth: number = prevPostDate.getMonth();
@@ -221,7 +224,8 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
       // Did we change year?      
       if (thisYear != currentYear) {
-        // calculate the average days between posts
+        log.debug(`Year change: ${currentYear} to ${thisYear}`);
+        // so wrap up the current year's stats and add them to the results array
         avgDays = yearPostDays / yearPostCount;
         // Add our year stats to the object
         let yearStats: YearStats = {
@@ -249,14 +253,13 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
       let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
 
-      // update our stats
+      // update the stats
       prevPostDate = postDate;
       totalDays += daysBetween;
       yearPostDays += daysBetween;
-      //update post counts
       monthPostCount++;
-      totalPostCount++;
       yearPostCount++;
+      totalPostCount++;
 
       // get the writing stats for the post
       const postStats: ContentStats = processPostFile(post.page.inputPath, debugMode);
@@ -280,7 +283,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     // ================================================================
     if (yearPostCount > 0) {
       // add the last months array to the year stats
-      months[prevPostDate.getMonth()].postCount = monthPostCount;     
+      months[prevPostDate.getMonth()].postCount = monthPostCount;
       // calculate the average days between posts
       avgDays = yearPostDays / yearPostCount;
       // Add our year stats to the object

@@ -8,7 +8,6 @@ test/
 # files
 .gitignore
 eleventy.config.js
-cpl.cmd
-pub.mjs
 package-lock.json
+pub.mjs
 tsconfig.json

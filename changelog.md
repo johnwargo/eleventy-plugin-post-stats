@@ -1,5 +1,11 @@
 # Changelog
 
+## 20240111 v0.2.7
+
+Troubleshooting a problem with the plugin improperly putting articles published on January 1, so I made some changes as I tested it. No functionality changes made. 
+
+The issue stems from the plugin treating Eleventy post file `data.page.date` property as UTC time which isn't correct. That takes any post published on January 1st and treats it like it was published on December 31st of the previous year. I'll fix this and publish an update tomorrow.
+
 ## 20240115 v0.2.6
 
 * Added code to fill in missing months in the monthly count data, a logic error on my part. To fix this, the plugin pre-populates the `months` array before processing posts.
