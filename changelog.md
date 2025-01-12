@@ -1,6 +1,6 @@
 # Changelog
 
-## 20240111 v0.2.7
+## 20240111 v0.2.12
 
 Troubleshooting a problem with the plugin improperly putting articles published on January 1, so I made some changes as I tested it. No functionality changes made. 
 
