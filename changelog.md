@@ -1,9 +1,8 @@
 # Changelog
 
-## 20250112 v0.3.0
+## 20250112 v0.2.13
 
-Implemented a fix for the January 1st problem described below. 
-
+Implemented a fix for the January 1st problem described below. Added the local timezone offset to every date read from a post. 
 
 ## 20240111 v0.2.12
 

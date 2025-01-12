@@ -2,7 +2,7 @@ const postStats = require('./eleventy-plugin-post-stats.js');
 
 module.exports = eleventyConfig => {
 
-  const debugMode = false;
+  const debugMode = true;
 
   // eleventyConfig.addPlugin(postStats);
   eleventyConfig.addPlugin(postStats, {debugMode});  

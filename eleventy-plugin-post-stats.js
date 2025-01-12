@@ -69,6 +69,10 @@ function processPostFile(filePath, debugMode) {
         };
     }
 }
+function convertPostDateToLocal(dateStr, offset) {
+    var date = new Date(dateStr);
+    return new Date(date.getTime() + offset);
+}
 module.exports = function (eleventyConfig, options = {}) {
     eleventyConfig.addCollection('postStats', (collectionApi) => {
         var avgDays = 0;
@@ -115,19 +119,21 @@ module.exports = function (eleventyConfig, options = {}) {
         }
         posts = posts.sort(byDate);
         statsObject.postCount = postCount;
-        statsObject.firstPostDate = posts[0].data.page.date;
-        statsObject.lastPostDate = posts[postCount - 1].data.page.date;
+        log.info(`Generating statistics for ${postCount} articles total`);
+        var timeOffset = new Date().getTimezoneOffset() * 60000;
+        log.debug(`Local time zone offset: ${timeOffset}`);
+        statsObject.firstPostDate = convertPostDateToLocal(posts[0].data.page.date, timeOffset);
+        statsObject.lastPostDate = convertPostDateToLocal(posts[postCount - 1].data.page.date, timeOffset);
         log.debug(`First post date: ${statsObject.firstPostDate}`);
         log.debug(`Last post date: ${statsObject.lastPostDate}`);
-        var prevPostDate = posts[0].data.page.date;
+        var prevPostDate = convertPostDateToLocal(posts[0].data.page.date, timeOffset);
         var currentMonth = prevPostDate.getMonth();
         var currentYear = prevPostDate.getFullYear();
         var months = fillMonthArray();
-        log.info(`Generating statistics for ${postCount} articles total`);
         log.debug(`${getMonthName(prevPostDate)}, ${currentYear}`);
         console.time(durationStr);
         for (let post of posts) {
-            let postDate = post.data.page.date;
+            let postDate = convertPostDateToLocal(post.data.page.date, timeOffset);
             let thisMonth = postDate.getMonth();
             let thisYear = postDate.getFullYear();
             if (thisMonth != currentMonth) {
@@ -159,7 +165,7 @@ module.exports = function (eleventyConfig, options = {}) {
                 currentYear = thisYear;
                 months = fillMonthArray();
             }
-            let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
+            let daysBetween = (postDate.getTime() - prevPostDate.getTime()) / oneDayMilliseconds;
             prevPostDate = postDate;
             totalDays += daysBetween;
             yearPostDays += daysBetween;

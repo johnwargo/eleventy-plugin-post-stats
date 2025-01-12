@@ -129,6 +129,11 @@ function processPostFile(filePath: string, debugMode: boolean): ContentStats {
   }
 }
 
+function convertPostDateToLocal(dateStr: string, offset: number): Date {
+  var date = new Date(dateStr);
+  return new Date(date.getTime() + offset);
+}
+
 module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
 
   eleventyConfig.addCollection('postStats', (collectionApi: any) => {
@@ -190,24 +195,31 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
     // we have a post count greater than zero, so use it to initialize some 
     // previous placeholder properties
     statsObject.postCount = postCount;
+    log.info(`Generating statistics for ${postCount} articles total`);
 
-    statsObject.firstPostDate = posts[0].data.page.date;
-    statsObject.lastPostDate = posts[postCount - 1].data.page.date;
+    // Added in v0.2.13 to handle posts created on Jan 1st
+    var timeOffset = new Date().getTimezoneOffset() * 60000;
+    log.debug(`Local time zone offset: ${timeOffset}`);
+
+    // v0.2.13 - convert the first and last post dates to local time
+    // statsObject.firstPostDate = posts[0].data.page.date;
+    // statsObject.lastPostDate = posts[postCount - 1].data.page.date;
+    statsObject.firstPostDate = convertPostDateToLocal(posts[0].data.page.date, timeOffset);
+    statsObject.lastPostDate = convertPostDateToLocal(posts[postCount - 1].data.page.date, timeOffset);
     log.debug(`First post date: ${statsObject.firstPostDate}`);
     log.debug(`Last post date: ${statsObject.lastPostDate}`);
 
-    var prevPostDate = posts[0].data.page.date;
+    var prevPostDate = convertPostDateToLocal(posts[0].data.page.date, timeOffset);
     var currentMonth: number = prevPostDate.getMonth();
     var currentYear = prevPostDate.getFullYear();
     var months: MonthStats[] = fillMonthArray();
-
-    log.info(`Generating statistics for ${postCount} articles total`);
     log.debug(`${getMonthName(prevPostDate)}, ${currentYear}`);
-    console.time(durationStr);
 
+    // Start the timer
+    console.time(durationStr);
     for (let post of posts) {
       // get the date from the current post
-      let postDate = post.data.page.date;
+      let postDate = convertPostDateToLocal(post.data.page.date, timeOffset);
       let thisMonth: number = postDate.getMonth();
       let thisYear = postDate.getFullYear();
 
@@ -251,7 +263,7 @@ module.exports = function (eleventyConfig: any, options: ModuleOptions = {}) {
         months = fillMonthArray();
       }
 
-      let daysBetween = (postDate - prevPostDate) / oneDayMilliseconds;
+      let daysBetween: number = (postDate.getTime() - prevPostDate.getTime()) / oneDayMilliseconds;
 
       // update the stats
       prevPostDate = postDate;
