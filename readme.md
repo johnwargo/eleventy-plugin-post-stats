@@ -266,8 +266,8 @@ I didn't code the post stats stuff, instead the plugin uses the [Writing-stats](
 
 The sample statistics page uses [MVP.css](https://andybrewer.github.io/mvp/) to make the site's sole page prettier without any direct styling. You should be able to take the repository's [index.liquid](https://github.com/johnwargo/eleventy-plugin-post-stats/blob/main/src/index.liquid) file and copy it over to your Eleventy project renaming it to `statistics.liquid` to add stats to the site.
 
-***
+---
 
-You can find information on many different topics on my [personal blog](http://www.johnwargo.com).
+If this code helps you, please consider buying me a coffee.
 
-If you find this code useful and feel like thanking me for providing it, please consider <a href="https://www.buymeacoffee.com/johnwargo" target="_blank">Buying Me a Coffee</a>, or making a purchase from [my Amazon Wish List](https://amzn.com/w/1WI6AAUKPT5P9).
+<a href="https://www.buymeacoffee.com/johnwargo" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
